@@ -22,7 +22,17 @@ body {
     float: left;
     height: 10%;
     color: white;
-    font-size:4rem;
+    font-size:5rem;
+    font-weight: 900;
+    text-shadow: 2px 4px rgba(52, 30, 0, 0.5);
+}
+
+.mainSub_title {
+    width: 100%;
+    float: left;
+    height: 10%;
+    color: rgb(17, 110, 5);
+    font-size:3rem;
     font-weight: 900;
     text-shadow: 2px 4px rgba(52, 30, 0, 0.5);
 }
@@ -79,7 +89,7 @@ body {
   
 .catCheckbox:checked + label {
     color: white;
-    background-color: rgb(146, 132, 9);
+    background-color: rgb(17, 110, 5);
 }
 
 input[type="checkbox"]:not(:checked), input[type="checkbox"]:checked {
@@ -98,7 +108,7 @@ input[type="checkbox"]:not(:checked), input[type="checkbox"]:checked {
 }
 
 .seed_track_div:checked + label {
-    background-color: rgb(168, 96, 36);
+    background-color: rgb(17, 110, 5);
     filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(31, 2, 2, 1));
 }
 

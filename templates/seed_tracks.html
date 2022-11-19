@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title id="title">Aux Assistant</title>
+        <title id="title">Aux Assistant - Seed Tracks</title>
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
     </head>
     <body>
@@ -30,8 +30,12 @@
                 </div>
             </form>
         {% endif %}
+
         <script>
+            // variable which is updated whenever a track is clicked
             var numberChecked = 0;
+            // function which is called everytime track div is clicked on
+            // The numberChecked variable is taken into account also, preventing the selection of a track if 5 already selected
             function selected(track, artistID) {
                 if(document.getElementById(track).checked === true) {
                     if(numberChecked < 5) {
