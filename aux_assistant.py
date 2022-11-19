@@ -25,7 +25,7 @@ SPOTIFY_ACCESS_TOKEN = auth_response_data['access_token']
 
 SPOTIFY_API_GENRES_URL = 'https://api.spotify.com/v1/recommendations/available-genre-seeds'
 
-cat = 'https://api.spotify.com/v1/browse/categories'
+SPOTIFY_CATEGORIES_URL = 'https://api.spotify.com/v1/browse/categories'
 
 cat_playlists = 'https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFQ00XGBls6ym/playlists'
 
@@ -36,15 +36,27 @@ headers = {
 
 res = requests.get(url=SPOTIFY_API_GENRES_URL, headers=headers)
 
-res2 = requests.get(url=cat, headers=headers)
+res2 = requests.get(url=SPOTIFY_CATEGORIES_URL, headers=headers)
 
-cats = res2.json()
-#print(json.dumps(res.json(), indent=2))
+categories = res2.json()
+#print(json.dumps(categories, indent=2))
 
 res3 = requests.get(url=cat_playlists, headers=headers)
 
 #print(json.dumps(cats['categories']['items'], indent=2))
 #print(json.dumps(res.json(), indent=2))
+
+def categories_playlists_tracks(categorie):
+    categorie_playlist_url = f'https://api.spotify.com/v1/browse/categories/{categorie}/playlists'
+    categorie_playlists = requests.get(url=categorie_playlist_url, headers=headers).json()
+    playlist_url = categorie_playlists['playlists']['items'][0]['id']
+    playlist_tracks_url = f'https://api.spotify.com/v1/playlists/{playlist_url}/tracks'
+    playlist_tracks = requests.get(url=playlist_tracks_url, headers=headers).json()
+    print(" Playlist - ", json.dumps(playlist_tracks['items'][4]['track']['album']['images'][1]['url'], indent=2))
+    # name - playlist_tracks['items'][4]['track']['name']
+    # id - playlist_tracks['items'][4]['track']['id']
+    # artist - playlist_tracks['items'][4]['track']['artists'][0]['name']
+    # image - playlist_tracks['items'][4]['track']['album']['images'][1]['url']
 
 @app.route('/')
 def hello():
@@ -58,6 +70,6 @@ def genre_display():
 def genre_handler():
     genre_list = request.form.getlist("genres")
     categorie_list = request.form.getlist("categories")
-    print("Genre List - ", genre_list)
-    print("Categorie List - ", categorie_list)
+    for c in categorie_list:
+        categories_playlists_tracks(c)
     return redirect(url_for('hello'))
