@@ -49,14 +49,32 @@ res3 = requests.get(url=cat_playlists, headers=headers)
 def categories_playlists_tracks(categorie):
     categorie_playlist_url = f'https://api.spotify.com/v1/browse/categories/{categorie}/playlists'
     categorie_playlists = requests.get(url=categorie_playlist_url, headers=headers).json()
-    playlist_url = categorie_playlists['playlists']['items'][0]['id']
-    playlist_tracks_url = f'https://api.spotify.com/v1/playlists/{playlist_url}/tracks'
-    playlist_tracks = requests.get(url=playlist_tracks_url, headers=headers).json()
-    print(" Playlist - ", json.dumps(playlist_tracks['items'][4]['track']['album']['images'][1]['url'], indent=2))
-    # name - playlist_tracks['items'][4]['track']['name']
-    # id - playlist_tracks['items'][4]['track']['id']
-    # artist - playlist_tracks['items'][4]['track']['artists'][0]['name']
-    # image - playlist_tracks['items'][4]['track']['album']['images'][1]['url']
+    i = 0
+    categorie_playlists_tracks_list = list()
+    while i < 3:
+        track_info_list = list()
+        rand_playlist = random.randint(0,19)
+        playlist_name = categorie_playlists['playlists']['items'][rand_playlist]['name']
+        track_info_list.append(playlist_name)
+        playlist_url = categorie_playlists['playlists']['items'][rand_playlist]['id']
+        playlist_tracks_url = f'https://api.spotify.com/v1/playlists/{playlist_url}/tracks'
+        playlist_tracks = requests.get(url=playlist_tracks_url, headers=headers).json()
+        rand_song = random.randint(0,19)
+        song_name = playlist_tracks['items'][rand_song]['track']['name']
+        track_info_list.append(song_name)
+        song_id = playlist_tracks['items'][rand_song]['track']['id']
+        track_info_list.append(song_id)
+        artist_name = playlist_tracks['items'][rand_song]['track']['artists'][0]['name']
+        track_info_list.append(artist_name)
+        artist_id = playlist_tracks['items'][rand_song]['track']['artists'][0]['id']
+        track_info_list.append(artist_id)
+        song_image_url = playlist_tracks['items'][rand_song]['track']['album']['images'][1]['url']
+        track_info_list.append(song_image_url)
+        categorie_playlists_tracks_list.append(track_info_list)
+        i += 1
+    return categorie_playlists_tracks_list
+
+    # returns -> [ [playlist_name, song_name, song_id, artist_name, artist_id, song_image_url], [playlist_name, song_name, song_id, artist_name, artist_id, song_image_url], [playlist_name, song_name, song_id, artist_name, artist_id, song_image_url] ]
 
 @app.route('/')
 def hello():
@@ -66,10 +84,19 @@ def hello():
 def genre_display():
     return render_template('genres.html')
 
-@app.route('/genre_handler', methods=['GET', 'POST'])
-def genre_handler():
+@app.route('/seed_tracks', methods=['GET', 'POST'])
+def seed_tracks_display():
     genre_list = request.form.getlist("genres")
     categorie_list = request.form.getlist("categories")
+    seed_track_and_artist_list = list()
     for c in categorie_list:
-        categories_playlists_tracks(c)
+        seed_track_and_artist_list.append(categories_playlists_tracks(c))
+    return render_template('seed_tracks.html', seedTracks=seed_track_and_artist_list)
+
+@app.route('/generate', methods=['GET', 'POST'])
+def generate_playlist():
+    seed_tracks = request.form.getlist('seed_tracks')
+    seed_artists = request.form.getlist('seed_artists')
+    print("Seed Tracks IDs - ", seed_tracks)
+    print("Seed Artists IDs - ", seed_artists)
     return redirect(url_for('hello'))

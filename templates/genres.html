@@ -7,15 +7,15 @@
     </head>
     <body>
         <h1 class="title">1. Select at most 5 Genres and/or Subgenres</h1>
-        <form method="POST" action="/genre_handler">
+        <form method="POST" action="/seed_tracks">
             <div id="catDiv">
                 <input type="checkbox" name="categories" value="0JQ5DAqbMKFEC4WFtoNRpw" id="pop" type="button" class="catCheckbox" onclick="displaySubOptions('pop')">
                 <label for="pop" style="font-size: 2.5rem; font-weight: 800">Pop</label>
                 <div id="pop_genres" style="display:none">
                     <input type="hidden" id="pop_hidden">
-                    <input type="checkbox" name="genres" value="j-pop" id="jpop" onclick="checkboxChange(this)"><label for="jpop">J Pop</label>
-                    <input type="checkbox" name="genres" value="k-pop" id="kpop" onclick="checkboxChange(this)"><label for="kpop">K Pop</label>
-                    <input type="checkbox" name="genres" value="indie-pop" id="indiePop" onclick="checkboxChange(this)"><label for="indiePop">Indie Pop</label>
+                    <input type="checkbox" name="genres" value="j-pop" id="jpop" onclick="checkboxChange(this)" class="catCheckbox"><label for="jpop">J Pop</label>
+                    <input type="checkbox" name="genres" value="k-pop" id="kpop" onclick="checkboxChange(this)" class="catCheckbox"><label for="kpop">K Pop</label>
+                    <input type="checkbox" name="genres" value="indie-pop" id="indiePop" onclick="checkboxChange(this)" class="catCheckbox"><label for="indiePop">Indie Pop</label>
                 </div>
             </div>
             <div id="catDiv">
@@ -23,15 +23,15 @@
                 <label for="chill" style="font-size: 2.5rem; font-weight: 800">Chill</label>
                 <div id="chill_genres" style="display:none">
                     <input type="hidden" id="chill_hidden">
-                    <input type="checkbox" name="genres" value="ambient" id="ambient" onclick="checkboxChange(this)"><label for="ambient">Ambient</label>
-                    <input type="checkbox" name="genres" value="happy" id="happy" onclick="checkboxChange(this)"><label for="happy">Happy</label>
-                    <input type="checkbox" name="genres" value="jazz" id="jazz" onclick="checkboxChange(this)"><label for="jazz">Jazz</label>
-                    <input type="checkbox" name="genres" value="study" id="study" onclick="checkboxChange(this)"><label for="study">Study</label>
-                    <input type="checkbox" name="genres" value="classical" id="classical" onclick="checkboxChange(this)"><label for="classical">Classical</label>
-                    <input type="checkbox" name="genres" value="piano" id="piano" onclick="checkboxChange(this)"><label for="piano">Piano</label>
-                    <input type="checkbox" name="genres" value="rainy-day" id="rainy-day" onclick="checkboxChange(this)"><label for="rainy-day">Rainy Day</label>
-                    <input type="checkbox" name="genres" value="sad" id="sad" onclick="checkboxChange(this)"><label for="sad">Sad</label>
-                    <input type="checkbox" name="genres" value="sleep" id="sleep" onclick="checkboxChange(this)"><label for="sleep">Sleep</label>
+                    <input type="checkbox" name="genres" value="ambient" id="ambient" onclick="checkboxChange(this)" class="catCheckbox"><label for="ambient">Ambient</label>
+                    <input type="checkbox" name="genres" value="happy" id="happy" onclick="checkboxChange(this)" class="catCheckbox"><label for="happy">Happy</label>
+                    <input type="checkbox" name="genres" value="jazz" id="jazz" onclick="checkboxChange(this)" class="catCheckbox"><label for="jazz">Jazz</label>
+                    <input type="checkbox" name="genres" value="study" id="study" onclick="checkboxChange(this)" class="catCheckbox"><label for="study">Study</label>
+                    <input type="checkbox" name="genres" value="classical" id="classical" onclick="checkboxChange(this)" class="catCheckbox"><label for="classical">Classical</label>
+                    <input type="checkbox" name="genres" value="piano" id="piano" onclick="checkboxChange(this)" class="catCheckbox"><label for="piano">Piano</label>
+                    <input type="checkbox" name="genres" value="rainy-day" id="rainy-day" onclick="checkboxChange(this)" class="catCheckbox"><label for="rainy-day">Rainy Day</label>
+                    <input type="checkbox" name="genres" value="sad" id="sad" onclick="checkboxChange(this)" class="catCheckbox"><label for="sad">Sad</label>
+                    <input type="checkbox" name="genres" value="sleep" id="sleep" onclick="checkboxChange(this)" class="catCheckbox"><label for="sleep">Sleep</label>
                 </div>
             </div>
             <div id="catDiv">
@@ -39,11 +39,11 @@
                 <label for="hip-hop" style="font-size: 2.5rem; font-weight: 800">Hip-Hop</label>
                 <div id="hip-hop_genres" style="display:none">
                     <input type="hidden" id="hip-hop_hidden">
-                    <input type="checkbox" name="genres" value="chicago-house" id="chicago-house" onclick="checkboxChange(this)"><label for="chicago-house">Chicago House</label>
-                    <input type="checkbox" name="genres" value="breakbeat" id="breakbeat" onclick="checkboxChange(this)"><label for="breakbeat">Break Beat</label>
-                    <input type="checkbox" name="genres" value="trip-hop" id="trip-hop" onclick="checkboxChange(this)"><label for="trip-hop">Trip Hop</label>
-                    <input type="checkbox" name="genres" value="work-out" id="work-out" onclick="checkboxChange(this)"><label for="work-out">Work Out</label>
-                    <input type="checkbox" name="genres" value="indie" id="indie" onclick="checkboxChange(this)"><label for="indie">Indie</label>
+                    <input type="checkbox" name="genres" value="chicago-house" id="chicago-house" onclick="checkboxChange(this)" class="catCheckbox"><label for="chicago-house">Chicago House</label>
+                    <input type="checkbox" name="genres" value="breakbeat" id="breakbeat" onclick="checkboxChange(this)" class="catCheckbox"><label for="breakbeat">Break Beat</label>
+                    <input type="checkbox" name="genres" value="trip-hop" id="trip-hop" onclick="checkboxChange(this)" class="catCheckbox"><label for="trip-hop">Trip Hop</label>
+                    <input type="checkbox" name="genres" value="work-out" id="work-out" onclick="checkboxChange(this)" class="catCheckbox"><label for="work-out">Work Out</label>
+                    <input type="checkbox" name="genres" value="indie" id="indie" onclick="checkboxChange(this)" class="catCheckbox"><label for="indie">Indie</label>
                 </div>
             </div>
             <div id="catDiv">
@@ -51,10 +51,10 @@
                 <label for="country" style="font-size: 2.5rem; font-weight: 800">Country</label>
                 <div id="country_genres" style="display:none">
                     <input type="hidden" id="country_hidden">
-                    <input type="checkbox" name="genres" value="bluegrass" id="bluegrass" onclick="checkboxChange(this)"><label for="bluegrass">Bluegrass</label>
-                    <input type="checkbox" name="genres" value="folk" id="folk" onclick="checkboxChange(this)"><label for="folk">Folk</label>
-                    <input type="checkbox" name="genres" value="guitar" id="guitar" onclick="checkboxChange(this)"><label for="guitar">Guitar</label>
-                    <input type="checkbox" name="genres" value="acoustic" id="acoustic" onclick="checkboxChange(this)"><label for="acoustic">Acoustic</label>
+                    <input type="checkbox" name="genres" value="bluegrass" id="bluegrass" onclick="checkboxChange(this)" class="catCheckbox"><label for="bluegrass">Bluegrass</label>
+                    <input type="checkbox" name="genres" value="folk" id="folk" onclick="checkboxChange(this)" class="catCheckbox"><label for="folk">Folk</label>
+                    <input type="checkbox" name="genres" value="guitar" id="guitar" onclick="checkboxChange(this)" class="catCheckbox"><label for="guitar">Guitar</label>
+                    <input type="checkbox" name="genres" value="acoustic" id="acoustic" onclick="checkboxChange(this)" class="catCheckbox"><label for="acoustic">Acoustic</label>
                 </div>
             </div>
             <div id="catDiv">
@@ -62,11 +62,11 @@
                 <label for="latin" style="font-size: 2.5rem; font-weight: 800">Latin</label>
                 <div id="latin_genres" style="display:none">
                     <input type="hidden" id="latin_hidden">
-                    <input type="checkbox" name="genres" value="world-music" id="world-music" onclick="checkboxChange(this)"><label for="world-music">World Music</label>
-                    <input type="checkbox" name="genres" value="brazil" id="brazil" onclick="checkboxChange(this)"><label for="brazil">Brazil</label>
-                    <input type="checkbox" name="genres" value="spanish" id="spanish" onclick="checkboxChange(this)"><label for="spanish">Spanish</label>
-                    <input type="checkbox" name="genres" value="salsa" id="salsa" onclick="checkboxChange(this)"><label for="salsa">Salsa</label>
-                    <input type="checkbox" name="genres" value="bossanova" id="bossanova" onclick="checkboxChange(this)"><label for="bossanova">Bossa Nova</label>
+                    <input type="checkbox" name="genres" value="world-music" id="world-music" onclick="checkboxChange(this)"class="catCheckbox"><label for="world-music">World Music</label>
+                    <input type="checkbox" name="genres" value="brazil" id="brazil" onclick="checkboxChange(this)"class="catCheckbox"><label for="brazil">Brazil</label>
+                    <input type="checkbox" name="genres" value="spanish" id="spanish" onclick="checkboxChange(this)"class="catCheckbox"><label for="spanish">Spanish</label>
+                    <input type="checkbox" name="genres" value="salsa" id="salsa" onclick="checkboxChange(this)"class="catCheckbox"><label for="salsa">Salsa</label>
+                    <input type="checkbox" name="genres" value="bossanova" id="bossanova" onclick="checkboxChange(this)"class="catCheckbox"><label for="bossanova">Bossa Nova</label>
                 </div>
             </div>
             <div id="catDiv">
@@ -74,27 +74,27 @@
                 <label for="rock" style="font-size: 2.5rem; font-weight: 800">Rock</label>
                 <div id="rock_genres" style="display:none">
                     <input type="hidden" id="rock_hidden">
-                    <input type="checkbox" name="genres" value="rock-n-roll" id="rock-n-roll" onclick="checkboxChange(this)"><label for="rock-n-roll">Rock n Roll</label>
-                    <input type="checkbox" name="genres" value="alt-rock" id="alt-rock" onclick="checkboxChange(this)"><label for="alt-rock">Alt Rock</label>
-                    <input type="checkbox" name="genres" value="metal" id="metal" onclick="checkboxChange(this)"><label for="metal">Metal</label>
-                    <input type="checkbox" name="genres" value="punk-rock" id="punk-rock" onclick="checkboxChange(this)"><label for="punk-rock">Punk Rock</label>
-                    <input type="checkbox" name="genres" value="hard-rock" id="hard-rock" onclick="checkboxChange(this)"><label for="hard-rock">Hard Rock</label>
-                    <input type="checkbox" name="genres" value="emo" id="emo" onclick="checkboxChange(this)"><label for="emo">Emo</label>
-                    <input type="checkbox" name="genres" value="industrial" id="industrial" onclick="checkboxChange(this)"><label for="industrial">Industrial</label>
+                    <input type="checkbox" name="genres" value="rock-n-roll" id="rock-n-roll" onclick="checkboxChange(this)"class="catCheckbox"><label for="rock-n-roll">Rock n Roll</label>
+                    <input type="checkbox" name="genres" value="alt-rock" id="alt-rock" onclick="checkboxChange(this)"class="catCheckbox"><label for="alt-rock">Alt Rock</label>
+                    <input type="checkbox" name="genres" value="metal" id="metal" onclick="checkboxChange(this)"class="catCheckbox"><label for="metal">Metal</label>
+                    <input type="checkbox" name="genres" value="punk-rock" id="punk-rock" onclick="checkboxChange(this)"class="catCheckbox"><label for="punk-rock">Punk Rock</label>
+                    <input type="checkbox" name="genres" value="hard-rock" id="hard-rock" onclick="checkboxChange(this)"class="catCheckbox"><label for="hard-rock">Hard Rock</label>
+                    <input type="checkbox" name="genres" value="emo" id="emo" onclick="checkboxChange(this)" class="catCheckbox"><label for="emo">Emo</label>
+                    <input type="checkbox" name="genres" value="industrial" id="industrial" onclick="checkboxChange(this)"class="catCheckbox"><label for="industrial">Industrial</label>
                 </div>
             </div>
             <div id="catDiv">
-                <input type="checkbox" name="categories" value="0JQ5DAqbMKFEZPnFQSFB1T" id="r&b" type="button" class="catCheckbox" onclick="displaySubOptions('r&b')">
+                <input type="checkbox" name="categories" value="0JQ5DAqbMKFEZPnFQSFB1T" id="r&b" type="button" class="catCheckbox"class="catCheckbox" onclick="displaySubOptions('r&b')">
                 <label for="r&b" style="font-size: 2.5rem; font-weight: 800">R&B</label>
                 <div id="r&b_genres" style="display:none">
                     <input type="hidden" id="r&b_hidden">
-                    <input type="checkbox" name="genres" value="soul" id="soul" onclick="checkboxChange(this)"><label for="soul">Soul</label>
-                    <input type="checkbox" name="genres" value="funk" id="funk" onclick="checkboxChange(this)"><label for="funk">Funk</label>
-                    <input type="checkbox" name="genres" value="blues" id="blues" onclick="checkboxChange(this)"><label for="blues">Blues</label>
-                    <input type="checkbox" name="genres" value="gospel" id="gospel" onclick="checkboxChange(this)"><label for="gospel">Gospel</label>
-                    <input type="checkbox" name="genres" value="reggae" id="reggae" onclick="checkboxChange(this)"><label for="reggae">Reggae</label>
-                    <input type="checkbox" name="genres" value="groove" id="groove" onclick="checkboxChange(this)"><label for="groove">Groove</label>
-                    <input type="checkbox" name="genres" value="indie" id="indie" onclick="checkboxChange(this)"><label for="indie">Indie</label>
+                    <input type="checkbox" name="genres" value="soul" id="soul" onclick="checkboxChange(this)" class="catCheckbox"><label for="soul">Soul</label>
+                    <input type="checkbox" name="genres" value="funk" id="funk" onclick="checkboxChange(this)" class="catCheckbox"><label for="funk">Funk</label>
+                    <input type="checkbox" name="genres" value="blues" id="blues" onclick="checkboxChange(this)" class="catCheckbox"><label for="blues">Blues</label>
+                    <input type="checkbox" name="genres" value="gospel" id="gospel" onclick="checkboxChange(this)" class="catCheckbox"><label for="gospel">Gospel</label>
+                    <input type="checkbox" name="genres" value="reggae" id="reggae" onclick="checkboxChange(this)" class="catCheckbox"><label for="reggae">Reggae</label>
+                    <input type="checkbox" name="genres" value="groove" id="groove" onclick="checkboxChange(this)" class="catCheckbox"><label for="groove">Groove</label>
+                    <input type="checkbox" name="genres" value="indie" id="indie" onclick="checkboxChange(this)" class="catCheckbox"><label for="indie">Indie</label>
                 </div>
             </div>
             <div id="catDiv">
@@ -102,17 +102,17 @@
                 <label for="dance" style="font-size: 2.5rem; font-weight: 800">Dance / Electronic</label>
                 <div id="dance_genres" style="display:none">
                     <input type="hidden" id="dance_hidden">
-                    <input type="checkbox" name="genres" value="dancehall" id="dancehall" onclick="checkboxChange(this)"><label for="dancehall">Dancehall</label>
-                    <input type="checkbox" name="genres" value="afrobeat" id="afrobeat" onclick="checkboxChange(this)"><label for="afrobeat">Afrobeat</label>
-                    <input type="checkbox" name="genres" value="edm" id="edm" onclick="checkboxChange(this)"><label for="edm">EDM</label>
-                    <input type="checkbox" name="genres" value="party" id="party" onclick="checkboxChange(this)"><label for="party">Party</label>
-                    <input type="checkbox" name="genres" value="house" id="house" onclick="checkboxChange(this)"><label for="house">House</label>
-                    <input type="checkbox" name="genres" value="deep-house" id="deep-house" onclick="checkboxChange(this)"><label for="deep-houseDeep">Deep House</label>
-                    <input type="checkbox" name="genres" value="club" id="club" onclick="checkboxChange(this)"><label for="club">Club</label>
-                    <input type="checkbox" name="genres" value="disco" id="disco" onclick="checkboxChange(this)"><label for="disco">Disco</label>
-                    <input type="checkbox" name="genres" value="dubstep" id="dubstep" onclick="checkboxChange(this)"><label for="dubstep">Dubstep</label>
-                    <input type="checkbox" name="genres" value="drum-and-bass" id="drum-and-bass" onclick="checkboxChange(this)"><label for="drum-and-bass">Drum and Bass</label>
-                    <input type="checkbox" name="genres" value="tango" id="tango" onclick="checkboxChange(this)"><label for="tango">Tango</label>
+                    <input type="checkbox" name="genres" value="dancehall" id="dancehall" onclick="checkboxChange(this)" class="catCheckbox"><label for="dancehall">Dancehall</label>
+                    <input type="checkbox" name="genres" value="afrobeat" id="afrobeat" onclick="checkboxChange(this)" class="catCheckbox"><label for="afrobeat">Afrobeat</label>
+                    <input type="checkbox" name="genres" value="edm" id="edm" onclick="checkboxChange(this)" class="catCheckbox"><label for="edm">EDM</label>
+                    <input type="checkbox" name="genres" value="party" id="party" onclick="checkboxChange(this)" class="catCheckbox"><label for="party">Party</label>
+                    <input type="checkbox" name="genres" value="house" id="house" onclick="checkboxChange(this)" class="catCheckbox"><label for="house">House</label>
+                    <input type="checkbox" name="genres" value="deep-house" id="deep-house" onclick="checkboxChange(this)" class="catCheckbox"><label for="deep-houseDeep">Deep House</label>
+                    <input type="checkbox" name="genres" value="club" id="club" onclick="checkboxChange(this)" class="catCheckbox"><label for="club">Club</label>
+                    <input type="checkbox" name="genres" value="disco" id="disco" onclick="checkboxChange(this)" class="catCheckbox"><label for="disco">Disco</label>
+                    <input type="checkbox" name="genres" value="dubstep" id="dubstep" onclick="checkboxChange(this)" class="catCheckbox"><label for="dubstep">Dubstep</label>
+                    <input type="checkbox" name="genres" value="drum-and-bass" id="drum-and-bass" onclick="checkboxChange(this)" class="catCheckbox"><label for="drum-and-bass">Drum and Bass</label>
+                    <input type="checkbox" name="genres" value="tango" id="tango" onclick="checkboxChange(this)" class="catCheckbox"><label for="tango">Tango</label>
                 </div>
             </div>
             <div style="width:100%; float:left">
@@ -120,7 +120,10 @@
             </div>      
         </form>
         <script>
+            // variable which is updated whenever a genre or subgenre is clicked
             var numberChecked = 0;
+            // this functions handles displaying the div of subgenres whether they are currently hidden or visible
+            // The numberChecked variable is taken into account also, preventing the display of subgenres if 5 have already been selected
             function displaySubOptions(genre) {
                 if(document.getElementById(genre+"_genres").style.display === "none") {
                     if(numberChecked < 5) {
@@ -128,7 +131,6 @@
                         document.getElementById(genre+"_hidden").name= "genres";
                         document.getElementById(genre+"_hidden").value= genre;
                         numberChecked++;
-                        console.log("num checked = ", numberChecked);
                     }
                     else {
                         document.getElementById(genre).checked = false;
@@ -139,18 +141,19 @@
                         document.getElementById(genre+"_hidden").removeAttribute('name');
                         document.getElementById(genre+"_hidden").removeAttribute('value');
                         numberChecked--;
-                        console.log("num checked = ", numberChecked);
                     }
             }
+            // this function is called everytime a genre or subgenre is clicked on
+            // if the selection is "unchecked" then the numberChecked is decremented
+            // if the selection is "checked" then the numberChecked is incremented IF the numberChecked is less than 5
+            // if numberChecked is not less than 5 then javascript makes selection not able to be selected
             function checkboxChange(cb) {
                 if(cb.checked === false) {
                     numberChecked--;
-                    console.log("num checked = ", numberChecked);
                 }
                 else {
                     if(numberChecked < 5) {
                         numberChecked++;
-                        console.log("num checked = ", numberChecked);
                     }
                     else {
                         cb.checked = false;

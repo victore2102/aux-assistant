@@ -21,7 +21,7 @@ body {
     display: inline-block;
     padding: 10px;
     color: #dbafb9;
-    background-color: rgb(31, 2, 2);
+    background-color: rgb(25, 13, 58);
     border-radius: 12px;
     cursor: pointer;
     display: inline-flex;
@@ -41,17 +41,17 @@ body {
     width:45%;
     height: 300px;
     margin: 2.5%;
-    background-color: rgb(25, 13, 58);
+    background-color: rgb(31, 2, 2);
     color: rgb(158, 74, 120);
     border-radius: 35px;
     filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(189, 183, 178, 0.6));
 }
 
-input[type="checkbox"] + label {
+.catCheckbox + label {
     display: inline-block;
     padding: 10px;
     color: #dbafb9;
-    background-color: rgb(31, 2, 2);
+    background-color: rgb(25, 13, 58);
     border-radius: 12px;
     cursor: pointer;
     display: inline-flex;
@@ -67,12 +67,36 @@ input[type="checkbox"] + label {
   }
 
   
-  input[type="checkbox"]:checked + label {
+.catCheckbox:checked + label {
     color: white;
     background-color: rgb(146, 132, 9);
-  }
+}
 
 input[type="checkbox"]:not(:checked), input[type="checkbox"]:checked {
-    position: absolute;
-    left: -9999%;
+    display: none;
   }
+
+.seed_track_div + label {
+    margin: 2%;
+    width: 29.33%;
+    height: 500px;
+    float: left;
+    background-color: rgb(31, 2, 2);
+    border-radius: 35px;
+    cursor: pointer;
+}
+
+.seed_track_div:checked + label {
+    background-color: rgb(146, 132, 9);
+    filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(255, 255, 255, 0.8));
+}
+
+.seed_track_div_text {
+    color: rgb(241, 232, 232);
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.seed_track_image {
+    filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(255, 255, 255, 0.8));
+}
