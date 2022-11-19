@@ -20,7 +20,14 @@
                         <input type="hidden" id={{track[4]}}>
                     {% endfor %}
                 {% endfor %}
-                <input type="submit" class="button" value="Continue">
+                <div style="width:50%; float:right">
+                    <input type="submit" class="button" value="Continue">
+                </div>
+            </form>
+            <form method="GET" action="/genres">
+                <div style="width:50%; float:right">
+                    <input type="submit" class="button" value="Back">
+                </div>
             </form>
         {% endif %}
         <script>

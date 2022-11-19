@@ -17,6 +17,16 @@ body {
     text-shadow: 2px 4px rgba(52, 30, 0, 0.5);
 }
 
+.main_title {
+    width: 100%;
+    float: left;
+    height: 10%;
+    color: white;
+    font-size:4rem;
+    font-weight: 900;
+    text-shadow: 2px 4px rgba(52, 30, 0, 0.5);
+}
+
 .button {
     display: inline-block;
     padding: 10px;
@@ -25,11 +35,11 @@ body {
     border-radius: 12px;
     cursor: pointer;
     display: inline-flex;
-    font-size: 1rem;
-    font-weight: 400;
+    font-size: 2rem;
+    font-weight: 700;
     justify-content: center;
     text-align: center;
-    letter-spacing: .2;
+    letter-spacing: .4;
     margin-left: 1%;
     box-shadow: 4px 4px #828181;
     margin-top: 2%;
@@ -84,11 +94,12 @@ input[type="checkbox"]:not(:checked), input[type="checkbox"]:checked {
     background-color: rgb(31, 2, 2);
     border-radius: 35px;
     cursor: pointer;
+    filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(255, 255, 255, 0.8));
 }
 
 .seed_track_div:checked + label {
-    background-color: rgb(146, 132, 9);
-    filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(255, 255, 255, 0.8));
+    background-color: rgb(168, 96, 36);
+    filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(31, 2, 2, 1));
 }
 
 .seed_track_div_text {
