@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title id="title">Aux Assistant - Seed Tracks</title>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
+    </head>
+    <body>
+        <h1 class="title">2. Select at most 5 songs that interest you</h1>
+        {% if seedTracks %}
+            <form method="POST" action="/generate">
+                {% for tracks in seedTracks %}
+                    {% for track in tracks %}
+                        <input type="checkbox" name="seed_tracks" value={{track[2]}} id={{track[2]}} class="seed_track_div" onclick="selected('{{track[2]}}', '{{track[4]}}')">
+                        <label for={{track[2]}}>
+                            <h1 class="seed_track_div_text">{{track[1]}}</h1>
+                            <img src={{track[5]}} class="seed_track_image">
+                            <h1 class="seed_track_div_text">{{track[3]}}</h1>
+                        </label>
+                        <input type="hidden" id={{track[4]}}>
+                    {% endfor %}
+                {% endfor %}
+                <div style="width:50%; float:right">
+                    <input type="submit" class="button" value="Continue">
+                </div>
+            </form>
+            <form method="GET" action="/genres">
+                <div style="width:50%; float:right">
+                    <input type="submit" class="button" value="Back">
+                </div>
+            </form>
+        {% endif %}
+
+        <script>
+            // variable which is updated whenever a track is clicked
+            var numberChecked = 0;
+            // function which is called everytime track div is clicked on
+            // The numberChecked variable is taken into account also, preventing the selection of a track if 5 already selected
+            function selected(track, artistID) {
+                if(document.getElementById(track).checked === true) {
+                    if(numberChecked < 5) {
+                        numberChecked++;
+                        document.getElementById(artistID).name = "seed_artists";
+                        document.getElementById(artistID).value = artistID;
+                    }
+                    else {
+                        document.getElementById(track).checked = false;
+                    }
+                }
+                else {
+                    numberChecked--;
+                    document.getElementById(artistID).removeAttribute('name');
+                    document.getElementById(artistID).removeAttribute('value');
+                }
+            }
+        </script>
+    </body>
+</html>

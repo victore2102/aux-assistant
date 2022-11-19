@@ -17,19 +17,39 @@ body {
     text-shadow: 2px 4px rgba(52, 30, 0, 0.5);
 }
 
+.main_title {
+    width: 100%;
+    float: left;
+    height: 10%;
+    color: white;
+    font-size:5rem;
+    font-weight: 900;
+    text-shadow: 2px 4px rgba(52, 30, 0, 0.5);
+}
+
+.mainSub_title {
+    width: 100%;
+    float: left;
+    height: 10%;
+    color: rgb(17, 110, 5);
+    font-size:3rem;
+    font-weight: 900;
+    text-shadow: 2px 4px rgba(52, 30, 0, 0.5);
+}
+
 .button {
     display: inline-block;
     padding: 10px;
     color: #dbafb9;
-    background-color: rgb(31, 2, 2);
+    background-color: rgb(25, 13, 58);
     border-radius: 12px;
     cursor: pointer;
     display: inline-flex;
-    font-size: 1rem;
-    font-weight: 400;
+    font-size: 2rem;
+    font-weight: 700;
     justify-content: center;
     text-align: center;
-    letter-spacing: .2;
+    letter-spacing: .4;
     margin-left: 1%;
     box-shadow: 4px 4px #828181;
     margin-top: 2%;
@@ -41,17 +61,17 @@ body {
     width:45%;
     height: 300px;
     margin: 2.5%;
-    background-color: rgb(25, 13, 58);
+    background-color: rgb(31, 2, 2);
     color: rgb(158, 74, 120);
     border-radius: 35px;
     filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(189, 183, 178, 0.6));
 }
 
-input[type="checkbox"] + label {
+.catCheckbox + label {
     display: inline-block;
     padding: 10px;
     color: #dbafb9;
-    background-color: rgb(31, 2, 2);
+    background-color: rgb(25, 13, 58);
     border-radius: 12px;
     cursor: pointer;
     display: inline-flex;
@@ -67,12 +87,37 @@ input[type="checkbox"] + label {
   }
 
   
-  input[type="checkbox"]:checked + label {
+.catCheckbox:checked + label {
     color: white;
-    background-color: rgb(146, 132, 9);
-  }
+    background-color: rgb(17, 110, 5);
+}
 
 input[type="checkbox"]:not(:checked), input[type="checkbox"]:checked {
-    position: absolute;
-    left: -9999%;
+    display: none;
   }
+
+.seed_track_div + label {
+    margin: 2%;
+    width: 29.33%;
+    height: 500px;
+    float: left;
+    background-color: rgb(31, 2, 2);
+    border-radius: 35px;
+    cursor: pointer;
+    filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(255, 255, 255, 0.8));
+}
+
+.seed_track_div:checked + label {
+    background-color: rgb(17, 110, 5);
+    filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(31, 2, 2, 1));
+}
+
+.seed_track_div_text {
+    color: rgb(241, 232, 232);
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.seed_track_image {
+    filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(255, 255, 255, 0.8));
+}
