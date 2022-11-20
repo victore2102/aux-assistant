@@ -96,13 +96,24 @@ def seed_tracks_display():
         seed_track_and_artist_list.append(categories_playlists_tracks(categorie))
     return render_template('seed_tracks.html', seedTracks=seed_track_and_artist_list)
 
-@app.route('/generate', methods=['GET', 'POST'])
-def generate_playlist():
-    '''Seed Track & Seed Artist Handler and Playlist Creation Display (work in progress)'''
+@app.route('/selection', methods=['GET', 'POST'])
+def final_selection():
+    '''Seed Track & Seed Artist Handler and User Selection Dispaly'''
     seed_tracks = request.form.getlist('seed_tracks')
     seed_artists = request.form.getlist('seed_artists')
     print("Seed Tracks IDs - ", seed_tracks)
     print("Seed Artists IDs - ", seed_artists)
+    return render_template('final_selection.html', genres=len(selected_genres), tracks=len(seed_tracks), artists=len(seed_artists))
+
+@app.route('/generate', methods=['GET', 'POST'])
+def generate_playlist():
+    '''Playlist Creation Display (work in progress)'''
+    genre_num = request.form.get('genre_num')
+    track_num = request.form.get('track_num')
+    artist_num = request.form.get('artist_num')
+    print("Number of Genres to Include - ", genre_num)
+    print("Number of Tracks to Include - ", track_num)
+    print("Number of Artists to Include - ", artist_num)
 
     #recommended_songs = requests.get(
     #    url=SPOTIFY_RECOMMENDATIONS_URL,
@@ -114,6 +125,4 @@ def generate_playlist():
       #  },
        # timeout=10).json()
     #print(json.dumps(recommended_songs, indent=2))
-
-    #return redirect(url_for('hello'))
-    return render_template('final_selection.html', genres=len(selected_genres), tracks=len(seed_tracks), artists=len(seed_artists))
+    return redirect(url_for('hello'))

@@ -8,7 +8,7 @@
     <body>
         <h1 class="title">2. Select at most 5 songs that interest you</h1>
         {% if seedTracks %}
-            <form method="POST" action="/generate">
+            <form method="POST" action="/selection">
                 {% for tracks in seedTracks %}
                     {% for track in tracks %}
                         <input type="checkbox" name="seed_tracks" value={{track[2]}} id={{track[2]}} class="seed_track_div" onclick="selected('{{track[2]}}', '{{track[4]}}')">
