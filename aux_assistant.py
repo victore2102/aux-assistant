@@ -18,6 +18,7 @@ app = Flask(__name__)
 # API URL'S
 SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/api/token'
 SPOTIFY_CATEGORIES_URL = 'https://api.spotify.com/v1/browse/categories'
+SPOTIFY_RECOMMENDATIONS_URL = 'https://api.spotify.com/v1/recommendations'
 
 ## Authorization request & response & header assignment
 auth_response = requests.post(SPOTIFY_AUTH_URL, {
@@ -31,6 +32,7 @@ headers = {
     "Authorization": "Bearer " + SPOTIFY_ACCESS_TOKEN
 }
 
+selected_genres = list()
 
 # Helper Function(s)
 def categories_playlists_tracks(categorie):
@@ -79,6 +81,8 @@ def genre_display():
 def seed_tracks_display():
     '''Genre Handler & Seed Tracks Display'''
     genre_list = request.form.getlist("genres")
+    global selected_genres
+    selected_genres = genre_list
     categorie_list = request.form.getlist("categories")
     print("Genres - ", genre_list)
     print("Categorie IDs - ", categorie_list)
@@ -94,4 +98,16 @@ def generate_playlist():
     seed_artists = request.form.getlist('seed_artists')
     print("Seed Tracks IDs - ", seed_tracks)
     print("Seed Artists IDs - ", seed_artists)
+
+    #recommended_songs = requests.get(
+    #    url=SPOTIFY_RECOMMENDATIONS_URL,
+     #   headers=headers,
+      #  params={
+       #     'seed_genres': f'{selected_genres[0]},{selected_genres[1]},{selected_genres[2]},{selected_genres[3]},{selected_genres[4]}',
+        #    'seed_tracks': '',
+         #   'seed_artists': ''
+      #  },
+       # timeout=10).json()
+    #print(json.dumps(recommended_songs, indent=2))
+
     return redirect(url_for('hello'))
