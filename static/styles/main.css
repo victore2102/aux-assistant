@@ -121,3 +121,14 @@ input[type="checkbox"]:not(:checked), input[type="checkbox"]:checked {
 .seed_track_image {
     filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(255, 255, 255, 0.8));
 }
+
+#final_select_div {
+    float:left;
+    height: 300px;
+    margin: 2%;
+    width: 29.33%;
+    background-color: rgb(31, 2, 2);
+    color: rgb(158, 74, 120);
+    border-radius: 35px;
+    filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(189, 183, 178, 0.6));
+}

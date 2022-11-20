@@ -6,6 +6,18 @@
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
     </head>
     <body>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% block content %}
+            <div>
+                {% for message in get_flashed_messages() %}
+                    <h1 style="color:rgb(181, 0, 0);">{{ message }}</h1>
+                {% endfor %}
+                {% block page_content %}{% endblock %}
+            </div>
+        {% endblock %}
+        {% endif %} 
+        {% endwith %}
         <h1 class="title">1. Select at most 5 Genres and/or Subgenres</h1>
         <form method="POST" action="/seed_tracks">
             <div id="catDiv">
@@ -116,6 +128,7 @@
                 </div>
             </div>
             <div style="width:50%; float:right">
+                <input type="hidden" name="valid" value="false" id="valid">
                 <input type="submit" class="button" value="Continue">
             </div>      
         </form>
@@ -135,6 +148,9 @@
                         document.getElementById(genre+"_genres").style.display = "block";
                         document.getElementById(genre+"_hidden").name= "genres";
                         document.getElementById(genre+"_hidden").value= genre;
+                        if(numberChecked === 0) {
+                            document.getElementById('valid').value = "true";
+                        }
                         numberChecked++;
                     }
                     else {
@@ -146,6 +162,9 @@
                         document.getElementById(genre+"_hidden").removeAttribute('name');
                         document.getElementById(genre+"_hidden").removeAttribute('value');
                         numberChecked--;
+                        if(numberChecked === 0) {
+                            document.getElementById('valid').value = "false";
+                        }
                     }
             }
             // this function is called everytime a genre or subgenre is clicked on
@@ -155,9 +174,15 @@
             function checkboxChange(cb) {
                 if(cb.checked === false) {
                     numberChecked--;
+                    if(numberChecked === 0) {
+                        document.getElementById('valid').value = "false";
+                    }
                 }
                 else {
                     if(numberChecked < 5) {
+                        if(numberChecked === 0) {
+                            document.getElementById('valid').value = "true";
+                        }
                         numberChecked++;
                     }
                     else {

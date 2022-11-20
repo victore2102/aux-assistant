@@ -14,6 +14,7 @@ from flask_login import UserMixin
 load_dotenv(find_dotenv())
 
 app = Flask(__name__)
+app.secret_key = os.getenv('APP_SECRET_KEY')
 
 # API URL'S
 SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/api/token'
@@ -80,6 +81,10 @@ def genre_display():
 @app.route('/seed_tracks', methods=['GET', 'POST'])
 def seed_tracks_display():
     '''Genre Handler & Seed Tracks Display'''
+    print("valid - ", request.form.get("valid"))
+    if(request.form.get("valid") == "false"):
+        flash('Select at least one genre to continue')
+        return redirect(url_for('genre_display'))
     genre_list = request.form.getlist("genres")
     global selected_genres
     selected_genres = genre_list
@@ -110,4 +115,5 @@ def generate_playlist():
        # timeout=10).json()
     #print(json.dumps(recommended_songs, indent=2))
 
-    return redirect(url_for('hello'))
+    #return redirect(url_for('hello'))
+    return render_template('final_selection.html', genres=len(selected_genres), tracks=len(seed_tracks), artists=len(seed_artists))
