@@ -37,6 +37,9 @@ selected_genres = list()
 aux_assistant_playlist = list()
 
 # Helper Function(s)
+# 1. Function makes API call to get a playlist based on passed in categorie
+# 2. Random categorie playlist is chosen from response and API call is made to get items of playlist
+# 3. Random track is chosen from random playlist, and track information is stored in a list of lists
 def categories_playlists_tracks(categorie):
     '''Function requests playlists based on categorie and returns a list of lists of random tracks within random playlist'''
     categorie_playlist_url = f'https://api.spotify.com/v1/browse/categories/{categorie}/playlists'
@@ -68,6 +71,7 @@ def categories_playlists_tracks(categorie):
     # returns -> [ [playlist_name, song_name, song_id, artist_name, artist_id, song_image_url] ]
     # 3 inner lists are within outer list
 
+# Function makes API call for Spotify Recommended Tracks
 def generate_playlist_api(final_genres, final_track_ids, final_artist_ids):
     '''Function makes API call for recommended songs and calls function to populate into list of lists'''
     seed_genres = ','.join(final_genres)
@@ -85,6 +89,9 @@ def generate_playlist_api(final_genres, final_track_ids, final_artist_ids):
     #print(json.dumps(recommended_songs, indent=2))
     recommended_songs_info_list(recommended_songs)
 
+# Function takes JSON data of recommended songs and populates it into a global list of lists which will be used through jinja and for database
+# For saved playlists in database I think schema should include
+# song uri, song name, song id, artist name, artist id, and song image url
 def recommended_songs_info_list(recommended_songs):
     '''Function parses recommended songs JSON into list of lists of important info'''
     global aux_assistant_playlist
@@ -133,6 +140,7 @@ def seed_tracks_display():
     seed_track_and_artist_list = list()
     for categorie in categorie_list:
         seed_track_and_artist_list.append(categories_playlists_tracks(categorie))
+        # seed_track_and_artist_list will be in format [ [ [],[],[] ], [ [],[],[] ], [ [],[],[] ]...]
     return render_template('seed_tracks.html', seedTracks=seed_track_and_artist_list)
 
 @app.route('/selection', methods=['GET', 'POST'])
