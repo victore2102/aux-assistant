@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title id="title">Aux Assistant - Genres</title>
+        <title id="title">Aux Assistant - Final Selection</title>
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
     </head>
     <body>
@@ -37,6 +37,7 @@
             </div>
         </form>
         <script>
+            //Script block here responsible for making sure no more than 5 choices are selected throguh conditonal statements
             var top5 = 0;
             function checkboxChange(cb) {
                 if(cb.checked === false) {

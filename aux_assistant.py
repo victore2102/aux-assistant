@@ -69,6 +69,7 @@ def categories_playlists_tracks(categorie):
     # 3 inner lists are within outer list
 
 def generate_playlist_api(final_genres, final_track_ids, final_artist_ids):
+    '''Function makes API call for recommended songs and calls function to populate into list of lists'''
     seed_genres = ','.join(final_genres)
     seed_tracks = ','.join(final_track_ids)
     seed_artists = ','.join(final_artist_ids)
@@ -85,6 +86,7 @@ def generate_playlist_api(final_genres, final_track_ids, final_artist_ids):
     recommended_songs_info_list(recommended_songs)
 
 def recommended_songs_info_list(recommended_songs):
+    '''Function parses recommended songs JSON into list of lists of important info'''
     global aux_assistant_playlist
     aux_assistant_playlist.clear()
     i = 0
@@ -107,7 +109,6 @@ def recommended_songs_info_list(recommended_songs):
     # aux_assistant_playlist global list in form of
     # [ [song_uri, song_name, song_id, artist_name, artist_id, song_image_url] ]
     # 20 inner lists within outer list
-    print(aux_assistant_playlist[0])
 
 @app.route('/')
 def hello():
@@ -122,7 +123,6 @@ def genre_display():
 @app.route('/seed_tracks', methods=['GET', 'POST'])
 def seed_tracks_display():
     '''Genre Handler & Seed Tracks Display'''
-    print("valid - ", request.form.get("valid"))
     if(request.form.get("valid") == "false"):
         flash('Select at least one genre to continue')
         return redirect(url_for('genre_display'))
@@ -130,8 +130,6 @@ def seed_tracks_display():
     global selected_genres
     selected_genres = genre_list
     categorie_list = request.form.getlist("categories")
-    print("Genres - ", genre_list)
-    print("Categorie IDs - ", categorie_list)
     seed_track_and_artist_list = list()
     for categorie in categorie_list:
         seed_track_and_artist_list.append(categories_playlists_tracks(categorie))
@@ -139,7 +137,7 @@ def seed_tracks_display():
 
 @app.route('/selection', methods=['GET', 'POST'])
 def final_selection():
-    '''Seed Track & Seed Artist Handler and User Selection Dispaly'''
+    '''Prompts the user to make their final selection of up to 5 entries'''
     seed_track_ids = []
     seed_artist_ids = []
     seed_track_names = []
@@ -149,10 +147,6 @@ def final_selection():
         seed_artist_ids = request.form.getlist('seed_artist_ids')
         seed_track_names = request.form.getlist('seed_track_names')
         seed_artist_names = request.form.getlist('seed_artist_names')
-    print("Seed Tracks IDs - ", seed_track_ids)
-    print("Seed Artists IDs - ", seed_artist_ids)
-    print("Seed Tracks Names - ", seed_track_names)
-    print("Seed Artists Names - ", seed_artist_names)
     if(len(selected_genres) + len(seed_track_names) + len(seed_artist_names) > 5):
         return render_template('final_selection.html', genres=selected_genres, track_names=seed_track_names, artist_names=seed_artist_names,
         track_ids=seed_track_ids, artist_ids=seed_artist_ids, genres_size=len(selected_genres), 
@@ -163,16 +157,14 @@ def final_selection():
 
 @app.route('/generate', methods=['GET', 'POST'])
 def generate_playlist():
-    '''Playlist Creation Display (work in progress)'''
+    '''Handles form data from final selections and calls function for recommended tracks'''
     final_genres = request.form.getlist('final_genres')
     final_track_ids = request.form.getlist('final_track_ids')
     final_artist_ids = request.form.getlist('final_artist_ids')
-    print("Final Genres - ", str(final_genres))
-    print("Final Tracks - ", final_track_ids)
-    print("Final Artists - ", final_artist_ids)
     generate_playlist_api(final_genres, final_track_ids, final_artist_ids)
     return redirect(url_for('view_songs'))
 
 @app.route('/playlist_view', methods=['GET', 'POST'])
 def view_songs():
+    '''Displays recommended tracks'''
     return render_template('view_playlist.html', playlist=aux_assistant_playlist)
