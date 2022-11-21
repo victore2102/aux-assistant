@@ -9,21 +9,21 @@
         <h1 class="title">3. Almost There! Only 5 fields are allowed. Choose below, or leave it to us and continue</h1>
         <form method="POST" action="/generate">
             <div id="final_select_div">
-                <h1>Of the {{genres}} Genre(s) you selected, how many would you like to include?</h1>
-                {% for i in range(genres) %}
-                <input type="checkbox" name="genre_num" value="{{i+1}}" id="genres_{{i+1}}" onclick="checkboxChange(this)" class="catCheckbox"><label for="genres_{{i+1}}">{{i+1}}</label>
+                <h1>Of the {{genres_size}} Genre(s) you chose, select the ones you would like to include?</h1>
+                {% for g in genres %}
+                <input type="checkbox" name="final_genres" value={{g}} id="genres_{{g}}" onclick="checkboxChange(this)" class="catCheckbox"><label for="genres_{{g}}">{{g}}</label>
                 {% endfor %}
             </div>
             <div id="final_select_div">
-                <h1>Of the {{tracks}} Tracks(s) you selected, how many would you like to include?</h1>
-                {% for i in range(tracks) %}
-                <input type="checkbox" name="track_num" value="{{i+1}}" id="tracks_{{i+1}}" onclick="checkboxChange(this)" class="catCheckbox"><label for="tracks_{{i+1}}">{{i+1}}</label>
+                <h1>Of the {{tracks_size}} Tracks(s) you chose, select the ones you would like to include?</h1>
+                {% for t in range(tracks_size) %}
+                <input type="checkbox" name="final_track_ids" value="{{track_ids[t]}}" id="tracks_{{t}}" onclick="checkboxChange(this)" class="catCheckbox"><label for="tracks_{{t}}">{{track_names[t]}}</label>
                 {% endfor %}
             </div>
             <div id="final_select_div">
-                <h1>Of the {{artists}} Artist(s) you selected, how many would you like to include?</h1>
-                {% for i in range(artists) %}
-                <input type="checkbox" name="artist_num" value="{{i+1}}" id="artists_{{i+1}}" onclick="checkboxChange(this)" class="catCheckbox"><label for="artists_{{i+1}}">{{i+1}}</label>
+                <h1>Of the {{artists_size}} Artist(s) you chose, select the ones you would like to include?</h1>
+                {% for r in range(artists_size) %}
+                <input type="checkbox" name="final_artist_ids" value="{{artist_ids[r]}}" id="artists_{{r}}" onclick="checkboxChange(this)" class="catCheckbox"><label for="artists_{{r}}">{{artist_names[r]}}</label>
                 {% endfor %}
             </div>
             <div style="width:50%; float:right">
@@ -40,11 +40,11 @@
             var top5 = 0;
             function checkboxChange(cb) {
                 if(cb.checked === false) {
-                    top5 -= Number(cb.value);
+                    top5--;
                 }
                 else {
-                    if(top5 + Number(cb.value) <= 5) {
-                        top5 += Number(cb.value);
+                    if(top5 + 1 <= 5) {
+                        top5 ++;
                     }
                     else {
                         cb.checked = false;

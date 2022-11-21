@@ -34,6 +34,7 @@ headers = {
 }
 
 selected_genres = list()
+aux_assistant_playlist = list()
 
 # Helper Function(s)
 def categories_playlists_tracks(categorie):
@@ -67,6 +68,46 @@ def categories_playlists_tracks(categorie):
     # returns -> [ [playlist_name, song_name, song_id, artist_name, artist_id, song_image_url] ]
     # 3 inner lists are within outer list
 
+def generate_playlist_api(final_genres, final_track_ids, final_artist_ids):
+    seed_genres = ','.join(final_genres)
+    seed_tracks = ','.join(final_track_ids)
+    seed_artists = ','.join(final_artist_ids)
+    recommended_songs = requests.get(
+        url=SPOTIFY_RECOMMENDATIONS_URL,
+        headers=headers,
+        params={
+            'seed_genres': seed_genres,
+            'seed_tracks': seed_tracks,
+            'seed_artists': seed_artists
+        },
+        timeout=10).json()
+    #print(json.dumps(recommended_songs, indent=2))
+    recommended_songs_info_list(recommended_songs)
+
+def recommended_songs_info_list(recommended_songs):
+    global aux_assistant_playlist
+    aux_assistant_playlist.clear()
+    i = 0
+    while i < 20:
+        track_info_list = list()
+        song_uri = recommended_songs['tracks'][i]['uri']
+        track_info_list.append(song_uri)
+        song_name = recommended_songs['tracks'][i]['name']
+        track_info_list.append(song_name)
+        song_id = recommended_songs['tracks'][i]['id']
+        track_info_list.append(song_id)
+        artist_name = recommended_songs['tracks'][i]['artists'][0]['name']
+        track_info_list.append(artist_name)
+        artist_id = recommended_songs['tracks'][i]['artists'][0]['id']
+        track_info_list.append(artist_id)
+        song_image_url = recommended_songs['tracks'][i]['album']['images'][1]['url']
+        track_info_list.append(song_image_url)
+        aux_assistant_playlist.append(track_info_list)
+        i+=1
+    # aux_assistant_playlist global list in form of
+    # [ [song_uri, song_name, song_id, artist_name, artist_id, song_image_url] ]
+    # 20 inner lists within outer list
+    print(aux_assistant_playlist[0])
 
 @app.route('/')
 def hello():
@@ -99,30 +140,39 @@ def seed_tracks_display():
 @app.route('/selection', methods=['GET', 'POST'])
 def final_selection():
     '''Seed Track & Seed Artist Handler and User Selection Dispaly'''
-    seed_tracks = request.form.getlist('seed_tracks')
-    seed_artists = request.form.getlist('seed_artists')
-    print("Seed Tracks IDs - ", seed_tracks)
-    print("Seed Artists IDs - ", seed_artists)
-    return render_template('final_selection.html', genres=len(selected_genres), tracks=len(seed_tracks), artists=len(seed_artists))
+    seed_track_ids = []
+    seed_artist_ids = []
+    seed_track_names = []
+    seed_artist_names = []
+    if(request.form.getlist('seed_track_ids') != None):
+        seed_track_ids = request.form.getlist('seed_track_ids')
+        seed_artist_ids = request.form.getlist('seed_artist_ids')
+        seed_track_names = request.form.getlist('seed_track_names')
+        seed_artist_names = request.form.getlist('seed_artist_names')
+    print("Seed Tracks IDs - ", seed_track_ids)
+    print("Seed Artists IDs - ", seed_artist_ids)
+    print("Seed Tracks Names - ", seed_track_names)
+    print("Seed Artists Names - ", seed_artist_names)
+    if(len(selected_genres) + len(seed_track_names) + len(seed_artist_names) > 5):
+        return render_template('final_selection.html', genres=selected_genres, track_names=seed_track_names, artist_names=seed_artist_names,
+        track_ids=seed_track_ids, artist_ids=seed_artist_ids, genres_size=len(selected_genres), 
+        tracks_size=len(seed_track_names), artists_size=len(seed_artist_names))
+    else:
+        generate_playlist_api(selected_genres, seed_track_ids, seed_artist_ids)
+        return redirect(url_for('view_songs'))
 
 @app.route('/generate', methods=['GET', 'POST'])
 def generate_playlist():
     '''Playlist Creation Display (work in progress)'''
-    genre_num = request.form.get('genre_num')
-    track_num = request.form.get('track_num')
-    artist_num = request.form.get('artist_num')
-    print("Number of Genres to Include - ", genre_num)
-    print("Number of Tracks to Include - ", track_num)
-    print("Number of Artists to Include - ", artist_num)
+    final_genres = request.form.getlist('final_genres')
+    final_track_ids = request.form.getlist('final_track_ids')
+    final_artist_ids = request.form.getlist('final_artist_ids')
+    print("Final Genres - ", str(final_genres))
+    print("Final Tracks - ", final_track_ids)
+    print("Final Artists - ", final_artist_ids)
+    generate_playlist_api(final_genres, final_track_ids, final_artist_ids)
+    return redirect(url_for('view_songs'))
 
-    #recommended_songs = requests.get(
-    #    url=SPOTIFY_RECOMMENDATIONS_URL,
-     #   headers=headers,
-      #  params={
-       #     'seed_genres': f'{selected_genres[0]},{selected_genres[1]},{selected_genres[2]},{selected_genres[3]},{selected_genres[4]}',
-        #    'seed_tracks': '',
-         #   'seed_artists': ''
-      #  },
-       # timeout=10).json()
-    #print(json.dumps(recommended_songs, indent=2))
-    return redirect(url_for('hello'))
+@app.route('/playlist_view', methods=['GET', 'POST'])
+def view_songs():
+    return render_template('view_playlist.html', playlist=aux_assistant_playlist)
