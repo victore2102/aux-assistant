@@ -8,16 +8,21 @@
     <body>
         <h1 class="title">2. Select at most 5 songs that interest you</h1>
         {% if seedTracks %}
-            <form method="POST" action="/generate">
+            <div style="width:100%; float:right">
+                <button class="button" onclick="location.reload()">Re-Shuffle Tracks</button>
+            </div>
+            <form method="POST" action="/selection">
                 {% for tracks in seedTracks %}
                     {% for track in tracks %}
-                        <input type="checkbox" name="seed_tracks" value={{track[2]}} id={{track[2]}} class="seed_track_div" onclick="selected('{{track[2]}}', '{{track[4]}}')">
+                        <input type="checkbox" name="seed_track_ids" value={{track[2]}} id={{track[2]}} class="seed_track_div" onclick="selected('{{track[1]}}', '{{track[2]}}', '{{track[3]}}', '{{track[4]}}')">
                         <label for={{track[2]}}>
                             <h1 class="seed_track_div_text">{{track[1]}}</h1>
                             <img src={{track[5]}} class="seed_track_image">
                             <h1 class="seed_track_div_text">{{track[3]}}</h1>
                         </label>
-                        <input type="hidden" id={{track[4]}}>
+                        <input type="hidden" id='{{track[1]}}'>
+                        <input type="hidden" id='{{track[3]}}'>
+                        <input type="hidden" id='{{track[4]}}'>
                     {% endfor %}
                 {% endfor %}
                 <div style="width:50%; float:right">
@@ -36,21 +41,30 @@
             var numberChecked = 0;
             // function which is called everytime track div is clicked on
             // The numberChecked variable is taken into account also, preventing the selection of a track if 5 already selected
-            function selected(track, artistID) {
-                if(document.getElementById(track).checked === true) {
+            function selected(trackName, trackID, artistName, artistID) {
+                if(document.getElementById(trackID).checked === true) {
                     if(numberChecked < 5) {
                         numberChecked++;
-                        document.getElementById(artistID).name = "seed_artists";
+                        document.getElementById(trackName).name = "seed_track_names";
+                        document.getElementById(trackName).value = trackName;
+                        document.getElementById(artistName).name = "seed_artist_names";
+                        document.getElementById(artistName).value = artistName;
+                        document.getElementById(artistID).name = "seed_artist_ids";
                         document.getElementById(artistID).value = artistID;
+                        console.log(artistID)
                     }
                     else {
-                        document.getElementById(track).checked = false;
+                        document.getElementById(trackID).checked = false;
                     }
                 }
                 else {
                     numberChecked--;
                     document.getElementById(artistID).removeAttribute('name');
                     document.getElementById(artistID).removeAttribute('value');
+                    document.getElementById(artistName).removeAttribute('name');
+                    document.getElementById(artistName).removeAttribute('value');
+                    document.getElementById(trackName).removeAttribute('name');
+                    document.getElementById(trackName).removeAttribute('value');
                 }
             }
         </script>

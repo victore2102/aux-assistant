@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title id="title">Aux Assistant - View Playlist</title>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
+    </head>
+    <body>
+        <h1 class="title">Here is your Playlist!</h1>
+        {% if playlist %}
+                {% for track in playlist %}
+                        <div class="playlist_div">
+                            <h1 class="playlist_div_text">{{track[1]}}</h1>
+                            <img src={{track[5]}} class="playlist_div_image">
+                            <h1 class="playlist_div_text">{{track[3]}}</h1>
+                        </div>
+                {% endfor %}
+        {% endif %}
+        <form method="GET" action="/">
+            <div style="width:100%; float:left">
+                <input type="submit" class="button" value="Home">
+            </div>
+        </form>
+    </body>
+</html>

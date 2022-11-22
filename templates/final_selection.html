@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title id="title">Aux Assistant - Final Selection</title>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
+    </head>
+    <body>
+        <h1 class="title">3. Almost There! Only 5 fields are allowed. Choose below, or leave it to us and continue</h1>
+        <form method="POST" action="/generate">
+            <div id="final_select_div">
+                <h1>Of the {{genres_size}} Genre(s) you chose, select the ones you would like to include?</h1>
+                {% for g in genres %}
+                <input type="checkbox" name="final_genres" value={{g}} id="genres_{{g}}" onclick="checkboxChange(this)" class="catCheckbox"><label for="genres_{{g}}">{{g}}</label>
+                {% endfor %}
+            </div>
+            <div id="final_select_div">
+                <h1>Of the {{tracks_size}} Tracks(s) you chose, select the ones you would like to include?</h1>
+                {% for t in range(tracks_size) %}
+                <input type="checkbox" name="final_track_ids" value="{{track_ids[t]}}" id="tracks_{{t}}" onclick="checkboxChange(this)" class="catCheckbox"><label for="tracks_{{t}}">{{track_names[t]}}</label>
+                {% endfor %}
+            </div>
+            <div id="final_select_div">
+                <h1>Of the {{artists_size}} Artist(s) you chose, select the ones you would like to include?</h1>
+                {% for r in range(artists_size) %}
+                <input type="checkbox" name="final_artist_ids" value="{{artist_ids[r]}}" id="artists_{{r}}" onclick="checkboxChange(this)" class="catCheckbox"><label for="artists_{{r}}">{{artist_names[r]}}</label>
+                {% endfor %}
+            </div>
+            <div style="width:50%; float:right">
+                <input type="hidden" name="valid" value="false" id="valid">
+                <input type="submit" class="button" value="Continue">
+            </div>      
+        </form>
+        <form method="GET" action="/">
+            <div style="width:50%; float:right">
+                <input type="submit" class="button" value="Back">
+            </div>
+        </form>
+        <script>
+            //Script block here responsible for making sure no more than 5 choices are selected throguh conditonal statements
+            var top5 = 0;
+            function checkboxChange(cb) {
+                if(cb.checked === false) {
+                    top5--;
+                }
+                else {
+                    if(top5 + 1 <= 5) {
+                        top5 ++;
+                    }
+                    else {
+                        cb.checked = false;
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>
