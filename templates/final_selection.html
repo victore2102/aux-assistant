@@ -6,7 +6,10 @@
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
     </head>
     <body>
-        <h1 class="title">3. Almost There! Only 5 fields are allowed. Choose below, or leave it to us and continue</h1>
+        <h1 class="title">3. Choose any combination of genres, songs, and artists. At most 5 selections allowed</h1>
+        <div style="width: 100%; float: left">
+            <h2 style="color: white"><span id="remaining">5</span> possible choices remaining...</h2>
+        </div>
         <form method="POST" action="/generate">
             <div id="final_select_div">
                 <h1>Of the {{genres_size}} Genre(s) you chose, select the ones you would like to include?</h1>
@@ -27,29 +30,39 @@
                 {% endfor %}
             </div>
             <div style="width:50%; float:right">
-                <input type="hidden" name="valid" value="false" id="valid">
-                <input type="submit" class="button" value="Continue">
+                <input type="submit" class="button" value="Continue" id="submit" disabled>
             </div>      
         </form>
-        <form method="GET" action="/">
+        <form method="GET" action="/genres">
             <div style="width:50%; float:right">
-                <input type="submit" class="button" value="Back">
+                <input type="submit" class="button" value="Restart">
             </div>
         </form>
         <script>
             //Script block here responsible for making sure no more than 5 choices are selected throguh conditonal statements
             var top5 = 0;
+            var remain = 5;
             function checkboxChange(cb) {
                 if(cb.checked === false) {
                     top5--;
+                    remain++;
+                    document.getElementById("remaining").innerHTML = remain;
                 }
                 else {
                     if(top5 + 1 <= 5) {
                         top5 ++;
+                        remain--;
+                        document.getElementById("remaining").innerHTML = remain;
                     }
                     else {
                         cb.checked = false;
                     }
+                }
+                if(top5 != 0) {
+                    document.getElementById("submit").disabled = false;
+                }
+                else {
+                    document.getElementById("submit").disabled = true;
                 }
             }
         </script>

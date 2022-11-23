@@ -1,3 +1,157 @@
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 768px) {
+/* Styles */
+    #catDiv {
+        float:left;
+        width:45%;
+        height: 18vh;
+        margin: 2.5%;
+        background-color: rgb(31, 2, 2);
+        color: rgb(158, 74, 120);
+        border-radius: 35px;
+        filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(189, 183, 178, 0.6));
+    }
+    .main_title {
+        width: 100%;
+        float: left;
+        height: 20vh;
+        color: white;
+        font-size:9rem;
+        font-weight: 900;
+        text-shadow: 2px 4px rgba(52, 30, 0, 0.5);
+        padding-top: 10vh;
+    }
+    
+    .mainSub_title {
+        width: 100%;
+        float: left;
+        height: 10%;
+        color: rgb(17, 110, 5);
+        font-size:7rem;
+        font-weight: 900;
+        text-shadow: 2px 4px rgba(52, 30, 0, 0.5);
+        margin-bottom: 5vh;
+        padding-top: 6vh;
+    }
+    .seed_track_image {
+        filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(255, 255, 255, 0.8));
+        width: 80%;
+        height: 50%;
+    }
+    .seed_track_div + label {
+        margin: 2%;
+        width: 29.33%;
+        height: 18vh;
+        float: left;
+        background-color: rgb(31, 2, 2);
+        border-radius: 35px;
+        cursor: pointer;
+        filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(255, 255, 255, 0.8));
+    }
+    #final_select_div {
+        float:left;
+        height: 20vh;
+        margin: 2%;
+        width: 96%;
+        background-color: rgb(31, 2, 2);
+        color: rgb(158, 74, 120);
+        border-radius: 35px;
+        filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(189, 183, 178, 0.6));
+    }
+    .playlist_div {
+        margin: 1%;
+        width: 23%;
+        height: 15vh;
+        float: left;
+        background-color: rgb(31, 2, 2);
+        border-radius: 35px;
+        cursor: pointer;
+        filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(255, 255, 255, 0.8));
+    }
+    .about {
+        color: white;
+        font-size: 1rem;
+        font-weight: 800;
+    }
+}
+
+/* Desktops and laptops ----------- */
+@media only screen 
+and (min-device-width : 768px) {
+/* Styles */
+    #catDiv {
+        float:left;
+        width:45%;
+        height: 35vh;
+        margin: 2.5%;
+        background-color: rgb(31, 2, 2);
+        color: rgb(158, 74, 120);
+        border-radius: 35px;
+        filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(189, 183, 178, 0.6));
+    }
+    .main_title {
+        width: 100%;
+        float: left;
+        height: 10%;
+        color: white;
+        font-size:5rem;
+        font-weight: 900;
+        text-shadow: 2px 4px rgba(52, 30, 0, 0.5);
+    }
+    
+    .mainSub_title {
+        width: 100%;
+        float: left;
+        height: 10%;
+        color: rgb(17, 110, 5);
+        font-size:3rem;
+        font-weight: 900;
+        text-shadow: 2px 4px rgba(52, 30, 0, 0.5);
+    }
+    .seed_track_image {
+        filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(255, 255, 255, 0.8));
+    }
+    .seed_track_div + label {
+        margin: 2%;
+        width: 29.33%;
+        height: 70vh;
+        float: left;
+        background-color: rgb(31, 2, 2);
+        border-radius: 35px;
+        cursor: pointer;
+        filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(255, 255, 255, 0.8));
+    }
+    #final_select_div {
+        float:left;
+        height: 70vh;
+        margin: 2%;
+        width: 29.33%;
+        background-color: rgb(31, 2, 2);
+        color: rgb(158, 74, 120);
+        border-radius: 35px;
+        filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(189, 183, 178, 0.6));
+    }
+    .playlist_div {
+        margin: 1%;
+        width: 18%;
+        height: 55vh;
+        float: left;
+        background-color: rgb(31, 2, 2);
+        border-radius: 35px;
+        cursor: pointer;
+        filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(255, 255, 255, 0.8));
+    }
+    .about {
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 800;
+    }
+}
+
+
+
 body {
     text-align: center;
     background-color: rgb(126, 10, 78);
@@ -11,30 +165,10 @@ body {
 .title {
     width: 100%;
     float: left;
-    height: 10%;
+    height: 5vh;
     color: white;
     font-size:2.5rem;
     font-weight: 800;
-    text-shadow: 2px 4px rgba(52, 30, 0, 0.5);
-}
-
-.main_title {
-    width: 100%;
-    float: left;
-    height: 10%;
-    color: white;
-    font-size:5rem;
-    font-weight: 900;
-    text-shadow: 2px 4px rgba(52, 30, 0, 0.5);
-}
-
-.mainSub_title {
-    width: 100%;
-    float: left;
-    height: 10%;
-    color: rgb(17, 110, 5);
-    font-size:3rem;
-    font-weight: 900;
     text-shadow: 2px 4px rgba(52, 30, 0, 0.5);
 }
 
@@ -57,16 +191,6 @@ body {
     margin-bottom: 2%;
 }
 
-#catDiv {
-    float:left;
-    width:45%;
-    height: 30vh;
-    margin: 2.5%;
-    background-color: rgb(31, 2, 2);
-    color: rgb(158, 74, 120);
-    border-radius: 35px;
-    filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(189, 183, 178, 0.6));
-}
 
 .catCheckbox + label {
     display: inline-block;
@@ -97,16 +221,6 @@ input[type="checkbox"]:not(:checked), input[type="checkbox"]:checked {
     display: none;
   }
 
-.seed_track_div + label {
-    margin: 2%;
-    width: 29.33%;
-    height: 70vh;
-    float: left;
-    background-color: rgb(31, 2, 2);
-    border-radius: 35px;
-    cursor: pointer;
-    filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(255, 255, 255, 0.8));
-}
 
 .seed_track_div:checked + label {
     background-color: rgb(17, 110, 5);
@@ -119,20 +233,6 @@ input[type="checkbox"]:not(:checked), input[type="checkbox"]:checked {
     font-weight: 800;
 }
 
-.seed_track_image {
-    filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(255, 255, 255, 0.8));
-}
-
-#final_select_div {
-    float:left;
-    height: 70vh;
-    margin: 2%;
-    width: 29.33%;
-    background-color: rgb(31, 2, 2);
-    color: rgb(158, 74, 120);
-    border-radius: 35px;
-    filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(189, 183, 178, 0.6));
-}
 
 .playlist_div_text {
     color: rgb(241, 232, 232);
@@ -142,19 +242,15 @@ input[type="checkbox"]:not(:checked), input[type="checkbox"]:checked {
     margin-top: 5%;
 }
 
-.playlist_div {
-    margin: 1%;
-    width: 18%;
-    height: 55vh;
-    float: left;
-    background-color: rgb(31, 2, 2);
-    border-radius: 35px;
-    cursor: pointer;
-    filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(255, 255, 255, 0.8));
-}
-
 .playlist_div_image {
     filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(255, 255, 255, 0.8));
     width: 80%;
     height: 50%;
+}
+
+#remaining {
+    font-size: 6rem;
+    font-weight: 800;
+    text-shadow: 3px 6px rgba(50, 50, 70, 0.5);
+    color: #341E00;
 }

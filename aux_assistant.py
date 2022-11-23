@@ -122,7 +122,7 @@ def hello():
     '''Home Page Display'''
     return render_template('index.html')
 
-@app.route('/genres', methods=['GET', 'POST'])
+@app.route('/genres')
 def genre_display():
     '''Genres Selection Page Display'''
     return render_template('genres.html')
@@ -159,9 +159,8 @@ def final_selection():
         return render_template('final_selection.html', genres=selected_genres, track_names=seed_track_names, artist_names=seed_artist_names,
         track_ids=seed_track_ids, artist_ids=seed_artist_ids, genres_size=len(selected_genres), 
         tracks_size=len(seed_track_names), artists_size=len(seed_artist_names))
-    else:
-        generate_playlist_api(selected_genres, seed_track_ids, seed_artist_ids)
-        return redirect(url_for('view_songs'))
+    generate_playlist_api(selected_genres, seed_track_ids, seed_artist_ids)
+    return redirect(url_for('view_songs'))
 
 @app.route('/generate', methods=['GET', 'POST'])
 def generate_playlist():
@@ -176,3 +175,8 @@ def generate_playlist():
 def view_songs():
     '''Displays recommended tracks'''
     return render_template('view_playlist.html', playlist=aux_assistant_playlist)
+
+@app.route('/about')
+def about_page():
+    '''Genres Selection Page Display'''
+    return render_template('about.html')
