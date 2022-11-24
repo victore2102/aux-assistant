@@ -6,34 +6,44 @@
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
     </head>
     <body>
-        <h1 class="mainSub_title">About</h1>
-        <h4 class="about"><em>This application is designed to assist people in playlist creation using Spotify's API. Logged in 
-            users will be able to create a playlist and save it for future referance. We are hoping to assist in any hassle when it comes to finding 
-            new music one might be interested in, or knowing what to play when passed the aux!
-        </em></h4>
-        <h1 class="mainSub_title">Playlist Creation Steps</h1>
-        <h4 class="about">1. The logged in user will first select genres/subgenres that they are interested in. 
-            Maximum of 5 selections allowed.
-        </h4><br>
-        <h4 class="about">2. Based on genresselection, the application will present random tracks existing in certain Spotify category playlists for the user to select. 
-            These songs serve as seed tracks for the API call, maximum of 5 tracks are allowed for selection. User is able to re-shuffle 
-            tracks and can continue without selecting any if they wish.
-        </h4><br>
-        <h4 class="about">3a. If the sum of the number of genres/subgenres, seed tracks, and artists (from seed tracks) selected is greater than 5 in total, then 
-            the user must narrow down their options. Only 5 total selections out of genres, tracks, and artists are allowed for the API call. 
-            In any combination of those three the user is prompted to select what they wish to base their playlist off of. At least one selection is 
-            required and at most 5 are allowed.
-        </h4><br>
-        <h4 class="about">3b. If the sum of the number of genres/subgenres, seed tracks, and artists (from seed tracks) selected is 
-            less than or equal to 5 in total, then the user is directed straight to the page which displays their new playlist.
-        </h4><br>
-        <h4 class="about">4. The user is now shown their generated playlist. Here they have to option to go back to the home screen or 
-            save the playlist.
-        </h4><br>
-        <div style="width:100%; float:left">
-            <form method="GET" action="/">
-                <input type="submit" class="button" value="Home">
-            </form>
+        <div id="loader" style="display:none"></div>
+        <div id="body">
+            <h1 class="mainSub_title">About</h1>
+            <h4 class="about"><em>This application is designed to assist people in playlist creation using Spotify's API. Logged in 
+                users will be able to create a playlist and save it for future referance. We are hoping to assist in any hassle when it comes to finding 
+                new music one might be interested in, or knowing what to play when passed the aux!
+            </em></h4>
+            <h1 class="mainSub_title">Playlist Creation Steps</h1>
+            <h4 class="about">1. The logged in user will first select genres/subgenres that they are interested in. 
+                Maximum of 5 selections allowed.
+            </h4><br>
+            <h4 class="about">2. Based on genresselection, the application will present random tracks existing in certain Spotify category playlists for the user to select. 
+                These songs serve as seed tracks for the API call, maximum of 5 tracks are allowed for selection. User is able to re-shuffle 
+                tracks and can continue without selecting any if they wish.
+            </h4><br>
+            <h4 class="about">3a. If the sum of the number of genres/subgenres, seed tracks, and artists (from seed tracks) selected is greater than 5 in total, then 
+                the user must narrow down their options. Only 5 total selections out of genres, tracks, and artists are allowed for the API call. 
+                In any combination of those three the user is prompted to select what they wish to base their playlist off of. At least one selection is 
+                required and at most 5 are allowed.
+            </h4><br>
+            <h4 class="about">3b. If the sum of the number of genres/subgenres, seed tracks, and artists (from seed tracks) selected is 
+                less than or equal to 5 in total, then the user is directed straight to the page which displays their new playlist.
+            </h4><br>
+            <h4 class="about">4. The user is now shown their generated playlist. Here they have to option to go back to the home screen or 
+                save the playlist.
+            </h4><br>
+            <div style="width:100%; float:left">
+                <form method="GET" action="/">
+                    <input type="submit" class="button" value="Home" onclick="load()">
+                </form>
+            </div>
         </div>
+        <script>
+            // Function which handles the display of the loading visual
+            function load() {
+                document.getElementById("loader").style.display = 'block';
+                document.getElementById("body").style.display = 'none';
+            }
+        </script>
     </body>
 </html>

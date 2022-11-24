@@ -6,23 +6,33 @@
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
     </head>
     <body>
-        <h1 class="title">Here is your Playlist!</h1>
-        {% if playlist %}
-                {% for track in playlist %}
-                        <div class="playlist_div">
-                            <h1 class="playlist_div_text">{{track[1]}}</h1>
-                            <img src={{track[5]}} class="playlist_div_image">
-                            <h1 class="playlist_div_text">{{track[3]}}</h1>
-                        </div>
-                {% endfor %}
-        {% endif %}
-        <form method="GET" action="/">
+        <div id="loader" style="display:none"></div>
+        <div id="body">
+            <h1 class="title">Here is your Playlist!</h1>
+            {% if playlist %}
+                    {% for track in playlist %}
+                            <div class="playlist_div">
+                                <h1 class="playlist_div_text">{{track[1]}}</h1>
+                                <img src={{track[5]}} class="playlist_div_image">
+                                <h1 class="playlist_div_text">{{track[3]}}</h1>
+                            </div>
+                    {% endfor %}
+            {% endif %}
+            <form method="GET" action="/">
+                <div style="width:50%; float:left">
+                    <input type="submit" class="button" value="Home" onclick="load()">
+                </div>
+            </form>
             <div style="width:50%; float:left">
-                <input type="submit" class="button" value="Home">
+                <button class="button">Save Playlist</button>
             </div>
-        </form>
-        <div style="width:50%; float:left">
-            <button class="button">Save Playlist</button>
         </div>
+        <script>
+            // Function which handles the display of the loading visual
+            function load() {
+                document.getElementById("loader").style.display = 'block';
+                document.getElementById("body").style.display = 'none';
+            }
+        </script>
     </body>
 </html>
