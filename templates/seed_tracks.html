@@ -8,6 +8,9 @@
     <body>
         <h1 class="title">2. Select at most 5 songs that interest you</h1>
         {% if seedTracks %}
+            <div style="width: 100%; float: left">
+                <h2 style="color: white"><span id="remaining">5</span> possible choices remaining...</h2>
+            </div>
             <div style="width:100%; float:right">
                 <button class="button" onclick="location.reload()">Re-Shuffle Tracks</button>
             </div>
@@ -39,19 +42,21 @@
         <script>
             // variable which is updated whenever a track is clicked
             var numberChecked = 0;
+            var remain = 5;
             // function which is called everytime track div is clicked on
             // The numberChecked variable is taken into account also, preventing the selection of a track if 5 already selected
             function selected(trackName, trackID, artistName, artistID) {
                 if(document.getElementById(trackID).checked === true) {
                     if(numberChecked < 5) {
                         numberChecked++;
+                        remain--;
+                        document.getElementById("remaining").innerHTML = remain;
                         document.getElementById(trackName).name = "seed_track_names";
                         document.getElementById(trackName).value = trackName;
                         document.getElementById(artistName).name = "seed_artist_names";
                         document.getElementById(artistName).value = artistName;
                         document.getElementById(artistID).name = "seed_artist_ids";
                         document.getElementById(artistID).value = artistID;
-                        console.log(artistID)
                     }
                     else {
                         document.getElementById(trackID).checked = false;
@@ -59,6 +64,8 @@
                 }
                 else {
                     numberChecked--;
+                    remain++;
+                    document.getElementById("remaining").innerHTML = remain;
                     document.getElementById(artistID).removeAttribute('name');
                     document.getElementById(artistID).removeAttribute('value');
                     document.getElementById(artistName).removeAttribute('name');
