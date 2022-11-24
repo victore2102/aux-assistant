@@ -19,6 +19,9 @@
         {% endif %} 
         {% endwith %}
         <h1 class="title">1. Select at most 5 Genres and/or Subgenres</h1>
+        <div style="width: 100%; float: left">
+            <h2 style="color: white"><span id="remaining">5</span> possible choices remaining...</h2>
+        </div>
         <form method="POST" action="/seed_tracks">
             <div id="catDiv">
                 <input type="checkbox" name="categories" value="0JQ5DAqbMKFEC4WFtoNRpw" id="pop" type="button" class="catCheckbox" onclick="displaySubOptions('pop')">
@@ -139,6 +142,7 @@
         <script>
             // variable which is updated whenever a genre or subgenre is clicked
             var numberChecked = 0;
+            var remain = 5;
             // this functions handles displaying the div of subgenres whether they are currently hidden or visible
             // The numberChecked variable is taken into account also, preventing the display of subgenres if 5 have already been selected
             function displaySubOptions(genre) {
@@ -151,6 +155,8 @@
                             document.getElementById('valid').value = "true";
                         }
                         numberChecked++;
+                        remain--;
+                        document.getElementById("remaining").innerHTML = remain;
                     }
                     else {
                         document.getElementById(genre).checked = false;
@@ -161,6 +167,8 @@
                         document.getElementById(genre+"_hidden").removeAttribute('name');
                         document.getElementById(genre+"_hidden").removeAttribute('value');
                         numberChecked--;
+                        remain++;
+                        document.getElementById("remaining").innerHTML = remain;
                         if(numberChecked === 0) {
                             document.getElementById('valid').value = "false";
                         }
@@ -173,6 +181,8 @@
             function checkboxChange(cb) {
                 if(cb.checked === false) {
                     numberChecked--;
+                    remain++;
+                    document.getElementById("remaining").innerHTML = remain;
                     if(numberChecked === 0) {
                         document.getElementById('valid').value = "false";
                     }
@@ -183,6 +193,8 @@
                             document.getElementById('valid').value = "true";
                         }
                         numberChecked++;
+                        remain--;
+                        document.getElementById("remaining").innerHTML = remain;
                     }
                     else {
                         cb.checked = false;

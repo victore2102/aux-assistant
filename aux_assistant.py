@@ -91,7 +91,7 @@ def generate_playlist_api(final_genres, final_track_ids, final_artist_ids):
 
 # Function takes JSON data of recommended songs and populates it into a global list of lists which will be used through jinja and for database
 # For saved playlists in database I think schema should include
-# song uri, song name, song id, artist name, artist id, and song image url
+# username, playlist name, song uri, song name, song id, artist name, artist id, and song image url
 def recommended_songs_info_list(recommended_songs):
     '''Function parses recommended songs JSON into list of lists of important info'''
     global aux_assistant_playlist
@@ -122,11 +122,13 @@ def hello():
     '''Home Page Display'''
     return render_template('index.html')
 
+# When made add login required decorator
 @app.route('/genres')
 def genre_display():
     '''Genres Selection Page Display'''
     return render_template('genres.html')
 
+# When made add login required decorator
 @app.route('/seed_tracks', methods=['GET', 'POST'])
 def seed_tracks_display():
     '''Genre Handler & Seed Tracks Display'''
@@ -143,6 +145,7 @@ def seed_tracks_display():
         # seed_track_and_artist_list will be in format [ [ [],[],[] ], [ [],[],[] ], [ [],[],[] ]...]
     return render_template('seed_tracks.html', seedTracks=seed_track_and_artist_list)
 
+# When made add login required decorator
 @app.route('/selection', methods=['GET', 'POST'])
 def final_selection():
     '''Prompts the user to make their final selection of up to 5 entries'''
@@ -162,6 +165,7 @@ def final_selection():
     generate_playlist_api(selected_genres, seed_track_ids, seed_artist_ids)
     return redirect(url_for('view_songs'))
 
+# When made add login required decorator
 @app.route('/generate', methods=['GET', 'POST'])
 def generate_playlist():
     '''Handles form data from final selections and calls function for recommended tracks'''
@@ -171,6 +175,7 @@ def generate_playlist():
     generate_playlist_api(final_genres, final_track_ids, final_artist_ids)
     return redirect(url_for('view_songs'))
 
+# When made add login required decorator
 @app.route('/playlist_view', methods=['GET', 'POST'])
 def view_songs():
     '''Displays recommended tracks'''
