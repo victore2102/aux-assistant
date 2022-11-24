@@ -78,11 +78,13 @@
                     document.getElementById(trackName).removeAttribute('value');
                 }
             }
+            // Function which handles when the re-shuffle button is pressed. Loading visual is shown on screen
             function reload() {
                 location.reload()
                 document.getElementById("loader").style.display = 'block';
                 document.getElementById("body").style.display = 'none';
             }
+            // Function which handles the display of the loading visual
             function load() {
                 document.getElementById("loader").style.display = 'block';
                 document.getElementById("body").style.display = 'none';
