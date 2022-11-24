@@ -6,21 +6,30 @@
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
     </head>
     <body>
-        <h1 class="mainSub_title">Spotify</h1>
-        <h1 class="main_title">Aux Assistant</h1>
-        <h1 class="mainSub_title"><em>Just leave the hassle to us</em></h1>
-        <div style="width:50%; float:left">
-            <button class="button">View Playlists</button>
+        <div id="loader" style="display:none"></div>
+        <div id="body">
+            <h1 class="mainSub_title">Spotify</h1>
+            <h1 class="main_title">Aux Assistant</h1>
+            <h1 class="mainSub_title"><em>Just leave the hassle to us</em></h1>
+            <div style="width:50%; float:left">
+                <button class="button">View Playlists</button>
+            </div>
+            <div style="width:50%; float:left">
+                <form method="GET" action="/genres">
+                    <input type="submit" class="button" value="New Playlist!" onclick="load()">
+                </form>
+            </div>
+            <div style="width:100%; float:left">
+                <form method="GET" action="/about">
+                    <input type="submit" class="button" value="About" onclick="load()">
+                </form>
+            </div>
         </div>
-        <div style="width:50%; float:left">
-            <form method="GET" action="/genres">
-                <input type="submit" class="button" value="New Playlist!">
-            </form>
-        </div>
-        <div style="width:100%; float:left">
-            <form method="GET" action="/about">
-                <input type="submit" class="button" value="About">
-            </form>
-        </div>
+        <script>
+            function load() {
+                document.getElementById("loader").style.display = 'block';
+                document.getElementById("body").style.display = 'none';
+            }
+        </script>
     </body>
 </html>
