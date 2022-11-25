@@ -35,6 +35,7 @@ headers = {
 
 selected_genres = list()
 aux_assistant_playlist = list()
+saved = {}
 
 # Helper Function(s)
 # 1. Function makes API call to get a playlist based on passed in categorie
@@ -183,5 +184,25 @@ def view_songs():
 
 @app.route('/about')
 def about_page():
-    '''Genres Selection Page Display'''
+    '''About Page Display'''
     return render_template('about.html')
+
+@app.route('/save')
+def save_playlist():
+    '''View Save Playlist Page'''
+    return render_template('save_playlist.html')
+
+@app.route('/save_handler', methods=['GET', 'POST'])
+def save_playlist_handler():
+    '''Handler for saving playlist'''
+    playlist_name = request.form.get('playlist_name')
+    date = request.form.get('date')
+    # will change once db is set up
+    global saved
+    if playlist_name in saved:
+        flash('Playlist Name already exists')
+        return redirect(url_for('save_playlist'))
+    #global aux_assistant_playlist
+    #aux_assistant_playlist.append(date)
+    saved.update({playlist_name: aux_assistant_playlist})
+    return redirect(url_for('hello'))

@@ -357,3 +357,13 @@ input[type="checkbox"]:not(:checked), input[type="checkbox"]:checked {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+#save {
+    width: 100%;
+    float: left;
+}
+
+#save input{
+    border-radius: 5px;
+    font-size: 30px;
+}
