@@ -3,6 +3,7 @@
 ### Created By : Victor Ekpenyong, Jacob Gaudet
 ## Deployed Site - https://aux-assistant.fly.dev/
 ## [Group Propasal Doc](https://docs.google.com/document/d/1hJv1MvUgkZs_L3tX0NVIcCq2RzdMOK0tk118iaEE9-Q/edit#heading=h.2e49ugtutnjr)
+## [GitHub Public Repo](https://github.com/victore2102/aux-assistant)
 ## Overview
 * This application is designed to assist people in playlist creation using Spotify's API. Logged in users will be able to create a playlist and save it for future referance. We are hoping to assist in any hassle when it comes to finding new music one might be interested in, or knowing what to play when passed the aux!
 * This project utilizes python flask framework on the backend for the server side of the technology stack. Libraries utilized within this project include:
