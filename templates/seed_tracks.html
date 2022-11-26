@@ -4,6 +4,8 @@
         <meta charset="utf-8">
         <title id="title">Aux Assistant - Seed Tracks</title>
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="../static/images/favicon.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../static/images/favicon.png">
     </head>
     <body>
         <div id="loader" style="display:none"></div>
@@ -14,7 +16,9 @@
                     <h2 style="color: white"><span id="remaining">5</span> possible choices remaining...</h2>
                 </div>
                 <div style="width:100%; float:right">
-                    <button class="button" onclick="reload()">Re-Shuffle Tracks</button>
+                    <form method="GET" action="/seed_tracks">
+                        <input type="submit" class="button" value="Re-Shuffle Tracks" onclick="load()">
+                    </form>
                 </div>
                 <form method="POST" action="/selection">
                     {% for tracks in seedTracks %}

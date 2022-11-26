@@ -34,6 +34,7 @@ headers = {
 }
 
 selected_genres = list()
+selected_categories = list()
 aux_assistant_playlist = list()
 saved = list()
 global_playlist_names = set()
@@ -134,15 +135,18 @@ def genre_display():
 @app.route('/seed_tracks', methods=['GET', 'POST'])
 def seed_tracks_display():
     '''Genre Handler & Seed Tracks Display'''
-    if(request.form.get("valid") == "false"):
-        flash('Select at least one genre to continue')
-        return redirect(url_for('genre_display'))
-    genre_list = request.form.getlist("genres")
-    global selected_genres
-    selected_genres = genre_list
-    categorie_list = request.form.getlist("categories")
+    if request.method == 'POST':
+        if(request.form.get("valid") == "false"):
+            flash('Select at least one genre to continue')
+            return redirect(url_for('genre_display'))
+        genre_list = request.form.getlist("genres")
+        global selected_genres
+        selected_genres = genre_list
+        categorie_list = request.form.getlist("categories")
+        global selected_categories
+        selected_categories = categorie_list
     seed_track_and_artist_list = list()
-    for categorie in categorie_list:
+    for categorie in selected_categories:
         seed_track_and_artist_list.append(categories_playlists_tracks(categorie))
         # seed_track_and_artist_list will be in format [ [ [],[],[] ], [ [],[],[] ], [ [],[],[] ]...]
     return render_template('seed_tracks.html', seedTracks=seed_track_and_artist_list)
