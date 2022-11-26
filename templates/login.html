@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title id="title">Aux Assistant - Login</title>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="../static/images/favicon.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../static/images/favicon.png">
+    </head>
+    <body>
+        <div id="loader" style="display:none"></div>
+        <div id="body">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% block content %}
+                <div>
+                    {% for message in get_flashed_messages() %}
+                        <h1 style="color:rgb(41, 51, 40); background-color: rgb(225, 0, 0);">{{ message }}</h1>
+                    {% endfor %}
+                    {% block page_content %}{% endblock %}
+                </div>
+            {% endblock %}
+            {% endif %} 
+            {% endwith %}
+            <div id="signup">
+                <h1 class="title">Aux Assistant</h1>
+                <h1 class="mainSub_title">Log In To Continue</h1>
+                <form method="POST" action="/validateLogin">
+                    <h1 class="title">Username:</h1>
+                    <input type="text" name="UserName" required><br>
+                    <h1 class="title">Password:</h1>
+                    <input type="password" name="PassWord" id="pass" required><br>
+                    <br>
+                    <input class="button" type="submit" value="Log In" onclick="load()">
+                </form><br>
+                <h1 class="mainSub_title">Not registerd? Click below</h1>
+                <form method="GET" action="/signup">
+                    <input type="submit" class="button" value="Sign Up" onclick="load()">
+                </form>
+            </div>
+            <div style="width:100%; float:left">
+                <form method="GET" action="/">
+                    <input type="submit" class="button" value="Home" onclick="load()">
+                </form>
+            </div>
+        </div>
+        <script>
+            // Function which handles the display of the loading visual
+            function load() {
+                document.getElementById("loader").style.display = 'block';
+                document.getElementById("body").style.display = 'none';
+            }
+        </script>
+    </body>
+</html>
