@@ -12,7 +12,9 @@
             <h1 class="main_title">Aux Assistant</h1>
             <h1 class="mainSub_title"><em>Just leave the hassle to us</em></h1>
             <div style="width:50%; float:left">
-                <button class="button">View Playlists</button>
+                <form method="GET" action="/view_saved">
+                    <input type="submit" class="button" value="View Playlists!" onclick="load()">
+                </form>
             </div>
             <div style="width:50%; float:left">
                 <form method="GET" action="/genres">
