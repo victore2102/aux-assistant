@@ -300,6 +300,7 @@ input[type="checkbox"]:not(:checked), input[type="checkbox"]:checked {
   }
 
 
+
 .seed_track_div:checked + label {
     background-color: rgb(17, 110, 5);
     filter: drop-shadow(0.5rem 0.5rem 0.6rem rgba(31, 2, 2, 1));
@@ -366,4 +367,33 @@ input[type="checkbox"]:not(:checked), input[type="checkbox"]:checked {
 #save input{
     border-radius: 5px;
     font-size: 30px;
+}
+
+.playlistNames + label {
+    display: inline-block;
+    padding: 10px;
+    color: #dbafb9;
+    background-color: rgb(25, 13, 58);
+    border-radius: 12px;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 1rem;
+    font-weight: 400;
+    justify-content: center;
+    text-align: center;
+    letter-spacing: .2;
+    margin-left: 1%;
+    box-shadow: 4px 4px #828181;
+    margin-top: 2%;
+    margin-bottom: 2%;
+  }
+
+  
+.playlistNames:checked + label {
+    color: white;
+    background-color: rgb(17, 110, 5);
+}
+
+.playlistNames:value {
+    display: none;
 }
