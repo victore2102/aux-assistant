@@ -23,7 +23,7 @@
     * Get request which takes in multiple parameters including genres, seed tracks, seed artists, and more which then returns a list of 20 recommended tracks using Spotify's algorithm
 ## Initial Set Up
 1. Make Sure that you have a functioning Spotify Client ID & Client Secret
-    * [Click Here for more information](https://discordapp.com/channels/@me/1040414771868082177/1043629307710406696)
+    * [Click Here for more information](https://developer.spotify.com/documentation/general/guides/authorization/app-settings/)
     * Store both within .env file as SPOTIFY_CLIENT_ID & SPOTIFY_CLIENT_SECRET
 2. Create an app_secret_key
     * Make your own app_secret_key and store it within your .env file set to the variable name 'APP_SECRET_KEY'
