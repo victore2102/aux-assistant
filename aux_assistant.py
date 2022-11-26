@@ -35,7 +35,8 @@ headers = {
 
 selected_genres = list()
 aux_assistant_playlist = list()
-saved = dict()
+saved = list()
+global_playlist_names = set()
 
 # Helper Function(s)
 # 1. Function makes API call to get a playlist based on passed in categorie
@@ -185,9 +186,6 @@ def view_songs():
 @app.route('/about')
 def about_page():
     '''About Page Display'''
-    global saved
-    saved.clear()
-    print(saved)
     return render_template('about.html')
 
 @app.route('/save')
@@ -200,45 +198,24 @@ def save_playlist_handler():
     '''Handler for saving playlist'''
     playlist_name = request.form.get('playlist_name')
     date = request.form.get('date')
-    print("Playlist Name:")
-    print(playlist_name)
-    print("")
     # will change once db is set up
-    for i in saved:
-        print(i, " - ")
-        print(saved[i])
-        print("")
-    print("--------------------------")
-    if playlist_name in saved:
+    global global_playlist_names
+    if playlist_name in global_playlist_names:
         flash('Playlist Name already exists')
         return redirect(url_for('save_playlist'))
-    global aux_assistant_playlist
-    aux_assistant_playlist.append(playlist_name)
-    aux_assistant_playlist.append(date)
-    print("aux-assistant-playlist:")
-    print(aux_assistant_playlist)
-    print("")
-    saved[playlist_name] = aux_assistant_playlist
-    print("new playlist in DICT:")
-    print(saved[playlist_name])
-    print("")
-    for i in saved:
-        print(i, " - ")
-        print(saved[i])
-        print("")
+    global_playlist_names.add(playlist_name)
+    current_playlist = list()
+    current_playlist = aux_assistant_playlist
+    current_playlist.append(playlist_name)
+    current_playlist.append(date)
+    saved.append(current_playlist)
     return redirect(url_for('hello'))
 
 @app.route('/view_saved')
 def view_saved_playlists():
-    return render_template('view_saved_playlists.html', saved_playlists=saved)
+    return render_template('view_saved_playlists.html', saved_playlists=saved, size=len(saved))
 
 @app.route('/view_specific', methods=['GET', 'POST'])
 def view_specific_saved_playlists():
-    p = request.form.get('p')
-    print("playlist names - ")
-    print(p)
-    print("")
-    print("playlist to be rendered:")
-    print(saved.get(p))
-    print("")
-    return render_template('view_specific.html', playlist=saved.get(p))
+    playlist = int(request.form.get('p'))
+    return render_template('view_specific.html', playlist=saved[playlist])

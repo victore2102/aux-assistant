@@ -10,12 +10,12 @@
         <div id="body">
             <h1 class="title">Saved Playlists</h1>
             <form method="POST" action="/view_specific" id="main_form">
-                {% for playlist in saved_playlists %}
+                {% for i in range(size) %}
                     <div style="width:50%; float: left">
-                        <input type="submit" name="p" value="{{playlist}}"" class="playlistNames" id={{playlist}} onclick="load()">
-                        <label for={{playlist}} style="font-size: 2.5rem; font-weight: 800">
-                            <h1 class="title">{{playlist}}</h1>
-                            <h1 class="seed_track_div_text">{{saved_playlists[playlist][21]}}</h1>
+                        <input type="checkbox" name="p" value={{i}} class="catCheckbox" id={{saved_playlists[i][20]}} onclick="submit()">
+                        <label for={{saved_playlists[i][20]}} style="font-size: 2.5rem; font-weight: 800">
+                            <h1 class="title">{{saved_playlists[i][20]}}</h1>
+                            <h1 class="seed_track_div_text">{{saved_playlists[i][21]}}</h1>
                         </label>
                     </div>
                 {% endfor %}
@@ -92,6 +92,10 @@
             function load() {
                 document.getElementById("loader").style.display = 'block';
                 document.getElementById("body").style.display = 'none';
+            }
+            function submit() {
+                document.getElementById("main_form").submit();
+                load();
             }
         </script>
     </body>
