@@ -38,6 +38,8 @@ selected_categories = list()
 aux_assistant_playlist = list()
 saved = list()
 global_playlist_names = set()
+USER = None
+USERSET = set()
 
 # Helper Function(s)
 # 1. Function makes API call to get a playlist based on passed in categorie
@@ -123,7 +125,7 @@ def recommended_songs_info_list(recommended_songs):
 @app.route('/')
 def hello():
     '''Home Page Display'''
-    return render_template('index.html')
+    return render_template('index.html', user=USER)
 
 # When made add login required decorator
 @app.route('/genres')
@@ -145,9 +147,13 @@ def seed_tracks_display():
         categorie_list = request.form.getlist("categories")
         global selected_categories
         selected_categories = categorie_list
-    seed_track_and_artist_list = list()
-    for categorie in selected_categories:
-        seed_track_and_artist_list.append(categories_playlists_tracks(categorie))
+        seed_track_and_artist_list = list()
+        for categorie in selected_categories:
+            seed_track_and_artist_list.append(categories_playlists_tracks(categorie))
+    else:
+        seed_track_and_artist_list = list()
+        for categorie in selected_categories:
+            seed_track_and_artist_list.append(categories_playlists_tracks(categorie))
         # seed_track_and_artist_list will be in format [ [ [],[],[] ], [ [],[],[] ], [ [],[],[] ]...]
     return render_template('seed_tracks.html', seedTracks=seed_track_and_artist_list)
 
@@ -223,3 +229,37 @@ def view_saved_playlists():
 def view_specific_saved_playlists():
     playlist = int(request.form.get('p'))
     return render_template('view_specific.html', playlist=saved[playlist])
+
+@app.route('/login')
+def login_page():
+    return render_template('login.html')
+
+@app.route('/signup')
+def signup_page():
+    return render_template('signup.html')
+
+@app.route('/validateSignup', methods=['GET', 'POST'])
+def validate_signup():
+    user = str(request.form.get("UserName"))
+    global USERSET
+    if user in USERSET:
+        flash('User Name already in use, try again or click below to Log In')
+        return redirect(url_for('signup_page'))
+    USERSET.add(user)
+    return redirect(url_for('login_page'))
+
+@app.route('/validateLogin', methods=['GET', 'POST'])
+def validate_login():
+    user = str(request.form.get("UserName"))
+    if not user in USERSET:
+        flash('Username and/or Passeword invalid, try again or click below to Sign Up')
+        return redirect(url_for('login_page'))
+    global USER
+    USER = user
+    return redirect(url_for('hello'))
+
+@app.route('/logout')
+def logout():
+    global USER
+    USER = None
+    return redirect(url_for('hello'))

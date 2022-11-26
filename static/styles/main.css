@@ -397,3 +397,33 @@ input[type="checkbox"]:not(:checked), input[type="checkbox"]:checked {
 .playlistNames:value {
     display: none;
 }
+
+#signup {
+    width: 100%;
+    float: left;
+}
+
+#signup input{
+    border-radius: 5px;
+    font-size: 30px;
+}
+
+.invalid {
+    color: red;
+}
+
+.invalid:before {
+    position: relative;
+    left: -35px;
+    content: "✖";
+}
+
+.valid {
+    color: rgb(17, 236, 17);
+}
+
+.valid:before {
+    position: relative;
+    left: -35px;
+    content: "✔";
+}
