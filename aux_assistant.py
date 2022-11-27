@@ -137,26 +137,28 @@ def genre_display():
 @app.route('/seed_tracks', methods=['GET', 'POST'])
 def seed_tracks_display():
     '''Genre Handler & Seed Tracks Display'''
-    if request.method == 'POST':
-        if(request.form.get("valid") == "false"):
-            flash('Select at least one genre to continue')
-            return redirect(url_for('genre_display'))
-        genre_list = request.form.getlist("genres")
-        global selected_genres
-        selected_genres = genre_list
-        categorie_list = request.form.getlist("categories")
-        global selected_categories
-        selected_categories = categorie_list
-        seed_track_and_artist_list = list()
-        for categorie in selected_categories:
-            seed_track_and_artist_list.append(categories_playlists_tracks(categorie))
-    else:
-        seed_track_and_artist_list = list()
-        for categorie in selected_categories:
-            seed_track_and_artist_list.append(categories_playlists_tracks(categorie))
+    if(request.form.get("valid") == "false"):
+        flash('Select at least one genre to continue')
+        return redirect(url_for('genre_display'))
+    genre_list = request.form.getlist("genres")
+    global selected_genres
+    selected_genres = genre_list
+    categorie_list = request.form.getlist("categories")
+    global selected_categories
+    selected_categories = categorie_list
+    seed_track_and_artist_list = list()
+    for categorie in selected_categories:
+        seed_track_and_artist_list.append(categories_playlists_tracks(categorie))
         # seed_track_and_artist_list will be in format [ [ [],[],[] ], [ [],[],[] ], [ [],[],[] ]...]
     return render_template('seed_tracks.html', seedTracks=seed_track_and_artist_list)
-
+@app.route('/re_shuffle', methods=['GET', 'POST'])
+def re_shuffle_tracks():
+    '''Handles the re-shuffling of tracks on seed track page'''
+    global selected_categories
+    seed_track_and_artist_list = list()
+    for categorie in selected_categories:
+        seed_track_and_artist_list.append(categories_playlists_tracks(categorie))
+    return render_template('seed_tracks.html', seedTracks=seed_track_and_artist_list)
 # When made add login required decorator
 @app.route('/selection', methods=['GET', 'POST'])
 def final_selection():
@@ -223,23 +225,28 @@ def save_playlist_handler():
 
 @app.route('/view_saved')
 def view_saved_playlists():
+    '''Renders page display of saved playlists'''
     return render_template('view_saved_playlists.html', saved_playlists=saved, size=len(saved))
 
 @app.route('/view_specific', methods=['GET', 'POST'])
 def view_specific_saved_playlists():
+    '''Renders page which displays specific saved playlist'''
     playlist = int(request.form.get('p'))
     return render_template('view_specific.html', playlist=saved[playlist])
 
 @app.route('/login')
 def login_page():
+    '''Renders login page'''
     return render_template('login.html')
 
 @app.route('/signup')
 def signup_page():
+    '''Renders signup page'''
     return render_template('signup.html')
 
 @app.route('/validateSignup', methods=['GET', 'POST'])
 def validate_signup():
+    '''Validates signup'''
     user = str(request.form.get("UserName"))
     global USERSET
     if user in USERSET:
@@ -250,6 +257,7 @@ def validate_signup():
 
 @app.route('/validateLogin', methods=['GET', 'POST'])
 def validate_login():
+    '''Validates login'''
     user = str(request.form.get("UserName"))
     if not user in USERSET:
         flash('Username and/or Passeword invalid, try again or click below to Sign Up')
@@ -260,6 +268,7 @@ def validate_login():
 
 @app.route('/logout')
 def logout():
+    '''User logout'''
     global USER
     USER = None
     return redirect(url_for('hello'))
