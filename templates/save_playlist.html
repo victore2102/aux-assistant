@@ -1,60 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title id="title">Aux Assistant - Save Playlist</title>
-        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
-        <link rel="icon" type="image/png" sizes="32x32" href="../static/images/favicon.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="../static/images/favicon.png">
-    </head>
-    <body>
-        <div id="loader" style="display:none"></div>
-        <div id="body">
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            {% block content %}
-                <div>
-                    {% for message in get_flashed_messages() %}
-                        <h1 style="color:rgb(41, 51, 40); background-color: rgb(225, 0, 0);">{{ message }}</h1>
-                    {% endfor %}
-                    {% block page_content %}{% endblock %}
-                </div>
-            {% endblock %}
-            {% endif %} 
-            {% endwith %}
-            <div id="save">
-                <h1 class="main_title">Save Playlist</h1>
-                <form method="POST" action="/save_handler">
-                    <h1 class="mainSub_title">Enter a name for your playlist</h1><br>
-                    <input type="text" name="playlist_name" required>
-                    <input type="hidden" name="date" value="" id="reviewDate">
-                    <input type="submit" class="button" value="Save" onclick="getDateAndTime()">
-                </form>
-            </div>
-            <div style="width:100%; float:left">
-                <form method="GET" action="/">
-                    <input type="submit" class="button" value="Home" onclick="load()">
-                </form>
-            </div>
-        </div>
-        <script>
-            // Function which handles the display of the loading visual
-            function load() {
-                document.getElementById("loader").style.display = 'block';
-                document.getElementById("body").style.display = 'none';
-            }
-            function getDateAndTime() {
-                reviewDate = document.getElementById("reviewDate");
-                let d = new Date();
-                const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                let day = days[d.getDay()];
-                let month = months[d.getMonth()];
-                let year = d.getFullYear();
-                let date = d.getDate();
-                let time = d.toLocaleTimeString();
-                reviewDate.value = `${day} ${month} ${date}, ${year} - ${time}`
-            }
-        </script>
-    </body>
+  <head>
+    <meta charset="utf-8" />
+    <title id="title">Aux Assistant - Save Playlist</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/main.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../static/images/favicon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="../static/images/favicon.png"
+    />
+  </head>
+  <body>
+    <div id="loader" style="display: none"></div>
+    <div id="body">
+      {% with messages = get_flashed_messages() %} {% if messages %} {% block
+      content %}
+      <div>
+        {% for message in get_flashed_messages() %}
+        <h1 style="color: rgb(41, 51, 40); background-color: rgb(225, 0, 0)">
+          {{ message }}
+        </h1>
+        {% endfor %} {% block page_content %}{% endblock %}
+      </div>
+      {% endblock %} {% endif %} {% endwith %}
+      <div id="save">
+        <h1 class="main_title">Save Playlist</h1>
+        <form method="POST" action="/save_handler">
+          <h1 class="mainSub_title">Enter a name for your playlist</h1>
+          <br />
+          <input type="text" name="playlist_name" required />
+          <input type="hidden" name="date" value="" id="reviewDate" />
+          <input
+            type="submit"
+            class="button"
+            value="Save"
+            onclick="getDateAndTime()"
+          />
+        </form>
+      </div>
+      <div style="width: 100%; float: left">
+        <form method="GET" action="/">
+          <input type="submit" class="button" value="Home" onclick="load()" />
+        </form>
+      </div>
+    </div>
+    <script>
+      // Function which handles the display of the loading visual
+      function load() {
+        document.getElementById("loader").style.display = "block";
+        document.getElementById("body").style.display = "none";
+      }
+      function getDateAndTime() {
+        reviewDate = document.getElementById("reviewDate");
+        let d = new Date();
+        const months = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        const days = [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ];
+        let day = days[d.getDay()];
+        let month = months[d.getMonth()];
+        let year = d.getFullYear();
+        let date = d.getDate();
+        let time = d.toLocaleTimeString();
+        reviewDate.value = `${day} ${month} ${date}, ${year} - ${time}`;
+      }
+    </script>
+  </body>
 </html>

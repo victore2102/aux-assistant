@@ -1,61 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title id="title">Aux Assistant - Home</title>
-        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
-        <link rel="icon" type="image/png" sizes="32x32" href="../static/images/favicon.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="../static/images/favicon.png">
-    </head>
-    <body>
-        <div id="loader" style="display:none"></div>
-        <div id="body">
-            <h1 class="mainSub_title">Spotify</h1>
-            <h1 class="main_title">Aux Assistant</h1>
-            {% if user != None %}
-                <h1 class="mainSub_title">Welcome <span class="title">{{user}}</span></h1><br>
-            {% endif %}
-            <h1 class="mainSub_title"><em>Just leave the hassle to us</em></h1>
-            {% if user != None %}
-                <div style="width:33.33%; float:left">
-                    <form method="GET" action="/view_saved">
-                        <input type="submit" class="button" value="View Playlists!" onclick="load()">
-                    </form>
-                </div>
-                <div style="width:33.33%; float:left">
-                    <form method="GET" action="/about">
-                        <input type="submit" class="button" value="About" onclick="load()">
-                    </form>
-                </div>
-                <div style="width:33.33%; float:left">
-                    <form method="GET" action="/genres">
-                        <input type="submit" class="button" value="New Playlist!" onclick="load()">
-                    </form>
-                </div>
-                <div style="width:100%; float:left">
-                    <form method="GET" action="/logout">
-                        <input type="submit" class="button" value="Log Out" onclick="load()">
-                    </form>
-                </div>
-            {% else %}
-                <div style="width:50%; float:left">
-                    <form method="GET" action="/about">
-                        <input type="submit" class="button" value="About" onclick="load()">
-                    </form>
-                </div>
-                <div style="width:50%; float:left">
-                    <form method="GET" action="/login">
-                        <input type="submit" class="button" value="Log In" onclick="load()">
-                    </form>
-                </div>
-            {% endif %}
-        </div>
-        <script>
-            // Function which handles the display of the loading visual
-            function load() {
-                document.getElementById("loader").style.display = 'block';
-                document.getElementById("body").style.display = 'none';
-            }
-        </script>
-    </body>
+  <head>
+    <meta charset="utf-8" />
+    <title id="title">Aux Assistant - Home</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/main.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../static/images/favicon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="../static/images/favicon.png"
+    />
+  </head>
+  <body>
+    <div id="loader" style="display: none"></div>
+    <div id="body">
+      <h1 class="mainSub_title">Spotify</h1>
+      <h1 class="main_title">Aux Assistant</h1>
+      {% if user != None %}
+      <h1 class="mainSub_title">Welcome <span class="title">{{user}}</span></h1>
+      <br />
+      {% endif %}
+      <h1 class="mainSub_title"><em>Just leave the hassle to us</em></h1>
+      {% if user != None %}
+      <div style="width: 33.33%; float: left">
+        <form method="GET" action="/view_saved">
+          <input
+            type="submit"
+            class="button"
+            value="View Playlists!"
+            onclick="load()"
+          />
+        </form>
+      </div>
+      <div style="width: 33.33%; float: left">
+        <form method="GET" action="/about">
+          <input type="submit" class="button" value="About" onclick="load()" />
+        </form>
+      </div>
+      <div style="width: 33.33%; float: left">
+        <form method="GET" action="/genres">
+          <input
+            type="submit"
+            class="button"
+            value="New Playlist!"
+            onclick="load()"
+          />
+        </form>
+      </div>
+      <div style="width: 100%; float: left">
+        <form method="GET" action="/logout">
+          <input
+            type="submit"
+            class="button"
+            value="Log Out"
+            onclick="load()"
+          />
+        </form>
+      </div>
+      {% else %}
+      <div style="width: 50%; float: left">
+        <form method="GET" action="/about">
+          <input type="submit" class="button" value="About" onclick="load()" />
+        </form>
+      </div>
+      <div style="width: 50%; float: left">
+        <form method="GET" action="/login">
+          <input type="submit" class="button" value="Log In" onclick="load()" />
+        </form>
+      </div>
+      {% endif %}
+    </div>
+    <script>
+      // Function which handles the display of the loading visual
+      function load() {
+        document.getElementById("loader").style.display = "block";
+        document.getElementById("body").style.display = "none";
+      }
+    </script>
+  </body>
 </html>
