@@ -1,98 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title id="title">Aux Assistant - Seed Tracks</title>
-        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
-        <link rel="icon" type="image/png" sizes="32x32" href="../static/images/favicon.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="../static/images/favicon.png">
-    </head>
-    <body>
-        <div id="loader" style="display:none"></div>
-        <div id="body">
-            <h1 class="title">2. Select at most 5 songs that interest you</h1>
-            {% if seedTracks %}
-                <div style="width: 100%; float: left">
-                    <h2 style="color: white"><span id="remaining">5</span> possible choices remaining...</h2>
-                </div>
-                <div style="width:100%; float:right">
-                    <form method="GET" action="/re_shuffle">
-                        <input type="submit" class="button" value="Re-Shuffle Tracks" onclick="load()">
-                    </form>
-                </div>
-                <form method="POST" action="/selection">
-                    {% for tracks in seedTracks %}
-                        {% for track in tracks %}
-                            <input type="checkbox" name="seed_track_ids" value={{track[2]}} id={{track[2]}} class="seed_track_div" onclick="selected('{{track[1]}}', '{{track[2]}}', '{{track[3]}}', '{{track[4]}}')">
-                            <label for={{track[2]}}>
-                                <h1 class="seed_track_div_text">{{track[1]}}</h1>
-                                <img src={{track[5]}} class="seed_track_image">
-                                <h1 class="seed_track_div_text">{{track[3]}}</h1>
-                            </label>
-                            <input type="hidden" id='{{track[1]}}'>
-                            <input type="hidden" id='{{track[3]}}'>
-                            <input type="hidden" id='{{track[4]}}'>
-                        {% endfor %}
-                    {% endfor %}
-                    <div style="width:50%; float:right">
-                        <input type="submit" class="button" value="Continue" onclick="load()">
-                    </div>
-                </form>
-                <form method="GET" action="/genres">
-                    <div style="width:50%; float:right">
-                        <input type="submit" class="button" value="Back" onclick="load()">
-                    </div>
-                </form>
-            {% endif %}
+  <head>
+    <meta charset="utf-8" />
+    <title id="title">Aux Assistant - Seed Tracks</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/main.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../static/images/favicon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="../static/images/favicon.png"
+    />
+  </head>
+  <body>
+    <div id="loader" style="display: none"></div>
+    <div id="body">
+      <h1 class="title">2. Select at most 5 songs that interest you</h1>
+      {% if seedTracks %}
+      <div style="width: 100%; float: left">
+        <h2 style="color: white">
+          <span id="remaining">5</span> possible choices remaining...
+        </h2>
+      </div>
+      <div style="width: 100%; float: right">
+        <form method="GET" action="/re_shuffle">
+          <input
+            type="submit"
+            class="button"
+            value="Re-Shuffle Tracks"
+            onclick="load()"
+          />
+        </form>
+      </div>
+      <form method="POST" action="/selection">
+        {% for tracks in seedTracks %} {% for track in tracks %}
+        <input
+          type="checkbox"
+          name="seed_track_ids"
+          value="{{track[2]}}"
+          id="{{track[2]}}"
+          class="seed_track_div"
+          onclick="selected('{{track[1]}}', '{{track[2]}}', '{{track[3]}}', '{{track[4]}}')"
+        />
+        <label for="{{track[2]}}">
+          <h1 class="seed_track_div_text">{{track[1]}}</h1>
+          <img src="{{track[5]}}" class="seed_track_image" />
+          <h1 class="seed_track_div_text">{{track[3]}}</h1>
+        </label>
+        <input type="hidden" id="{{track[1]}}" />
+        <input type="hidden" id="{{track[3]}}" />
+        <input type="hidden" id="{{track[4]}}" />
+        {% endfor %} {% endfor %}
+        <div style="width: 50%; float: right">
+          <input
+            type="submit"
+            class="button"
+            value="Continue"
+            onclick="load()"
+          />
         </div>
-        <script>
-            // variable which is updated whenever a track is clicked
-            var numberChecked = 0;
-            var remain = 5;
-            // function which is called everytime track div is clicked on
-            // The numberChecked variable is taken into account also, preventing the selection of a track if 5 already selected
-            function selected(trackName, trackID, artistName, artistID) {
-                if(document.getElementById(trackID).checked === true) {
-                    if(numberChecked < 5) {
-                        numberChecked++;
-                        remain--;
-                        console.log(remain);
-                        document.getElementById("remaining").innerHTML = remain;
-                        document.getElementById(trackName).name = "seed_track_names";
-                        document.getElementById(trackName).value = trackName;
-                        document.getElementById(artistName).name = "seed_artist_names";
-                        document.getElementById(artistName).value = artistName;
-                        document.getElementById(artistID).name = "seed_artist_ids";
-                        document.getElementById(artistID).value = artistID;
-                    }
-                    else {
-                        document.getElementById(trackID).checked = false;
-                    }
-                }
-                else {
-                    numberChecked--;
-                    remain++;
-                    console.log(remain);
-                    document.getElementById("remaining").innerHTML = remain;
-                    document.getElementById(artistID).removeAttribute('name');
-                    document.getElementById(artistID).removeAttribute('value');
-                    document.getElementById(artistName).removeAttribute('name');
-                    document.getElementById(artistName).removeAttribute('value');
-                    document.getElementById(trackName).removeAttribute('name');
-                    document.getElementById(trackName).removeAttribute('value');
-                }
-            }
-            // Function which handles when the re-shuffle button is pressed. Loading visual is shown on screen
-            function reload() {
-                location.reload()
-                document.getElementById("loader").style.display = 'block';
-                document.getElementById("body").style.display = 'none';
-            }
-            // Function which handles the display of the loading visual
-            function load() {
-                document.getElementById("loader").style.display = 'block';
-                document.getElementById("body").style.display = 'none';
-            }
-        </script>
-    </body>
+      </form>
+      <form method="GET" action="/genres">
+        <div style="width: 50%; float: right">
+          <input type="submit" class="button" value="Back" onclick="load()" />
+        </div>
+      </form>
+      {% endif %}
+    </div>
+    <script>
+      // variable which is updated whenever a track is clicked
+      var numberChecked = 0;
+      var remain = 5;
+      // function which is called everytime track div is clicked on
+      // The numberChecked variable is taken into account also, preventing the selection of a track if 5 already selected
+      function selected(trackName, trackID, artistName, artistID) {
+        if (document.getElementById(trackID).checked === true) {
+          if (numberChecked < 5) {
+            numberChecked++;
+            remain--;
+            console.log(remain);
+            document.getElementById("remaining").innerHTML = remain;
+            document.getElementById(trackName).name = "seed_track_names";
+            document.getElementById(trackName).value = trackName;
+            document.getElementById(artistName).name = "seed_artist_names";
+            document.getElementById(artistName).value = artistName;
+            document.getElementById(artistID).name = "seed_artist_ids";
+            document.getElementById(artistID).value = artistID;
+          } else {
+            document.getElementById(trackID).checked = false;
+          }
+        } else {
+          numberChecked--;
+          remain++;
+          console.log(remain);
+          document.getElementById("remaining").innerHTML = remain;
+          document.getElementById(artistID).removeAttribute("name");
+          document.getElementById(artistID).removeAttribute("value");
+          document.getElementById(artistName).removeAttribute("name");
+          document.getElementById(artistName).removeAttribute("value");
+          document.getElementById(trackName).removeAttribute("name");
+          document.getElementById(trackName).removeAttribute("value");
+        }
+      }
+      // Function which handles when the re-shuffle button is pressed. Loading visual is shown on screen
+      function reload() {
+        location.reload();
+        document.getElementById("loader").style.display = "block";
+        document.getElementById("body").style.display = "none";
+      }
+      // Function which handles the display of the loading visual
+      function load() {
+        document.getElementById("loader").style.display = "block";
+        document.getElementById("body").style.display = "none";
+      }
+    </script>
+  </body>
 </html>

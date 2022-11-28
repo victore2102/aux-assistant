@@ -1,121 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title id="title">Aux Assistant - Sign Up</title>
-        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
-        <link rel="icon" type="image/png" sizes="32x32" href="../static/images/favicon.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="../static/images/favicon.png">
-    </head>
-    <body>
-        <div id="loader" style="display:none"></div>
-        <div id="body">
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            {% block content %}
-                <div>
-                    {% for message in get_flashed_messages() %}
-                        <h1 style="color:rgb(41, 51, 40); background-color: rgb(225, 0, 0);">{{ message }}</h1>
-                    {% endfor %}
-                    {% block page_content %}{% endblock %}
-                </div>
-            {% endblock %}
-            {% endif %} 
-            {% endwith %}
-            <div id="signup">
-                <h1 class="title">Aux Assistant</h1>
-                <h1 class="mainSub_title">Sign Up</h1>
-                <form method="POST" action="/validateSignup">
-                    <h1 class="title">Username:</h1>
-                    <input type="text" name="UserName" required><br>
-                    <h1 class="title">Password:</h1>
-                    <input type="password" name="PassWord" id="pass" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!,@,#,$,%,^,&,*]).{5,}" title="Invalid Password Input" required><br>
-                <br>
-                <input class="button" type="submit" value="Sign Up" onclick="load()">
-                <h2 class="title"><em>You will be redirected to the log in page</em></h2>
-                </form><br>
-                <div>
-                    <h2 class="title">A Password must contain:</h2>
-                    <h4 id="length" class="invalid">Minimum 5 characters</h4>
-                    <h4 id="lowercase" class="invalid">Lowercase Letter</h4>
-                    <h4 id="uppercase" class="invalid">Uppercase Letter</h4>
-                    <h4 id="number" class="invalid">Number</h4>
-                    <h4 id="special" class="invalid">Special Character <em>(!,@,#,$,%,^,&,*)</em></h4>
-                </div>
-                <h1 class="mainSub_title">Already registerd? Click below</h1>
-                <form method="GET" action="/login">
-                    <input type="submit" class="button" value="Log In" onclick="load()">
-                </form>
-            </div>
-            <div style="width:100%; float:left">
-                <form method="GET" action="/">
-                    <input type="submit" class="button" value="Home" onclick="load()">
-                </form>
-            </div>
+  <head>
+    <meta charset="utf-8" />
+    <title id="title">Aux Assistant - Sign Up</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/main.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../static/images/favicon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="../static/images/favicon.png"
+    />
+  </head>
+  <body>
+    <div id="loader" style="display: none"></div>
+    <div id="body">
+      {% with messages = get_flashed_messages() %} {% if messages %} {% block
+      content %}
+      <div>
+        {% for message in get_flashed_messages() %}
+        <h1 style="color: rgb(41, 51, 40); background-color: rgb(225, 0, 0)">
+          {{ message }}
+        </h1>
+        {% endfor %} {% block page_content %}{% endblock %}
+      </div>
+      {% endblock %} {% endif %} {% endwith %}
+      <div id="signup">
+        <h1 class="title">Aux Assistant</h1>
+        <h1 class="mainSub_title">Sign Up</h1>
+        <form method="POST" action="/validateSignup">
+          <h1 class="title">Username:</h1>
+          <input type="text" name="UserName" required /><br />
+          <h1 class="title">Password:</h1>
+          <input
+            type="password"
+            name="PassWord"
+            id="pass"
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!,@,#,$,%,^,&,*]).{5,}"
+            title="Invalid Password Input"
+            required
+          /><br />
+          <br />
+          <input
+            class="button"
+            type="submit"
+            value="Sign Up"
+            onclick="load()"
+          />
+          <h2 class="title">
+            <em>You will be redirected to the log in page</em>
+          </h2>
+        </form>
+        <br />
+        <div>
+          <h2 class="title">A Password must contain:</h2>
+          <h4 id="length" class="invalid">Minimum 5 characters</h4>
+          <h4 id="lowercase" class="invalid">Lowercase Letter</h4>
+          <h4 id="uppercase" class="invalid">Uppercase Letter</h4>
+          <h4 id="number" class="invalid">Number</h4>
+          <h4 id="special" class="invalid">
+            Special Character <em>(!,@,#,$,%,^,&,*)</em>
+          </h4>
         </div>
-        <script>
-            let passwordInput = document.getElementById("pass");
-            let length = document.getElementById("length");
-            let lowercase = document.getElementById("lowercase");
-            let uppercase = document.getElementById("uppercase");
-            let number = document.getElementById("number");
-            let special = document.getElementById("special");
+        <h1 class="mainSub_title">Already registerd? Click below</h1>
+        <form method="GET" action="/login">
+          <input type="submit" class="button" value="Log In" onclick="load()" />
+        </form>
+      </div>
+      <div style="width: 100%; float: left">
+        <form method="GET" action="/">
+          <input type="submit" class="button" value="Home" onclick="load()" />
+        </form>
+      </div>
+    </div>
+    <script>
+      let passwordInput = document.getElementById("pass");
+      let length = document.getElementById("length");
+      let lowercase = document.getElementById("lowercase");
+      let uppercase = document.getElementById("uppercase");
+      let number = document.getElementById("number");
+      let special = document.getElementById("special");
 
-            passwordInput.onkeyup = function() {
-                if(passwordInput.value.length >= 5) {
-                    length.classList.remove("invalid");
-                    length.classList.add("valid");
-                }
-                else {
-                    length.classList.remove("valid");
-                    length.classList.add("invalid");
-                } 
+      passwordInput.onkeyup = function () {
+        if (passwordInput.value.length >= 5) {
+          length.classList.remove("invalid");
+          length.classList.add("valid");
+        } else {
+          length.classList.remove("valid");
+          length.classList.add("invalid");
+        }
 
-                var lowerCaseLetters = /[a-z]/g;
-                if(passwordInput.value.match(lowerCaseLetters)) {
-                    lowercase.classList.remove("invalid");
-                    lowercase.classList.add("valid");
-                }
-                else {
-                    lowercase.classList.remove("valid");
-                    lowercase.classList.add("invalid");
-                }
+        var lowerCaseLetters = /[a-z]/g;
+        if (passwordInput.value.match(lowerCaseLetters)) {
+          lowercase.classList.remove("invalid");
+          lowercase.classList.add("valid");
+        } else {
+          lowercase.classList.remove("valid");
+          lowercase.classList.add("invalid");
+        }
 
-                var upperCaseLetters = /[A-Z]/g;
-                if(passwordInput.value.match(upperCaseLetters)) {
-                    uppercase.classList.remove("invalid");
-                    uppercase.classList.add("valid");
-                }
-                else {
-                    uppercase.classList.remove("valid");
-                    uppercase.classList.add("invalid");
-                }
+        var upperCaseLetters = /[A-Z]/g;
+        if (passwordInput.value.match(upperCaseLetters)) {
+          uppercase.classList.remove("invalid");
+          uppercase.classList.add("valid");
+        } else {
+          uppercase.classList.remove("valid");
+          uppercase.classList.add("invalid");
+        }
 
-                var numbers = /[0-9]/g;
-                if(passwordInput.value.match(numbers)) {
-                    number.classList.remove("invalid");
-                    number.classList.add("valid");
-                }
-                else {
-                    number.classList.remove("valid");
-                    number.classList.add("invalid");
-                }
+        var numbers = /[0-9]/g;
+        if (passwordInput.value.match(numbers)) {
+          number.classList.remove("invalid");
+          number.classList.add("valid");
+        } else {
+          number.classList.remove("valid");
+          number.classList.add("invalid");
+        }
 
-                var specialchars = /[!,@,#,$,%,^,&,*]/g
-                if(passwordInput.value.match(specialchars)) {
-                    special.classList.remove("invalid");
-                    special.classList.add("valid");
-                }
-                else {
-                    special.classList.remove("valid");
-                    special.classList.add("invalid");
-                }
-            }
-            // Function which handles the display of the loading visual
-            function load() {
-                document.getElementById("loader").style.display = 'block';
-                document.getElementById("body").style.display = 'none';
-            }
-        </script>
-    </body>
+        var specialchars = /[!,@,#,$,%,^,&,*]/g;
+        if (passwordInput.value.match(specialchars)) {
+          special.classList.remove("invalid");
+          special.classList.add("valid");
+        } else {
+          special.classList.remove("valid");
+          special.classList.add("invalid");
+        }
+      };
+      // Function which handles the display of the loading visual
+      function load() {
+        document.getElementById("loader").style.display = "block";
+        document.getElementById("body").style.display = "none";
+      }
+    </script>
+  </body>
 </html>

@@ -57,7 +57,7 @@
 - Postgres database
 - Beautification
 
-## Reviewed Pull Requests
+## Peer Reviewed Pull Requests
 
 ### Victor Ekpenyong
 
@@ -67,9 +67,9 @@
 
 ### Jacob Gaudet
 
-1. [User model for database, initialized database, and set up Flask Login](https://github.com/victore2102/aux-assistant/pull/9)
-2. [Formatted all code using Black Formatter](https://github.com/victore2102/aux-assistant/pull/10)
-3. [Logic for validate_login, validate_signup, and logout](https://github.com/victore2102/aux-assistant/pull/11)
+1. [Added User model for db, initialized db, and set up LoginManager](https://github.com/victore2102/aux-assistant/pull/9)
+2. [Formatted all current html files using black formatter](https://github.com/victore2102/aux-assistant/pull/10)
+3. [Removed global placeholder, added login, signup, and logout logic](https://github.com/victore2102/aux-assistant/pull/11)
 
 ## Follow Up Questions
 

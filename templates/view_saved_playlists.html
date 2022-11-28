@@ -1,104 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title id="title">Aux Assistant - View Saved</title>
-        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
-        <link rel="icon" type="image/png" sizes="32x32" href="../static/images/favicon.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="../static/images/favicon.png">
-    </head>
-    <body>
-        <div id="loader" style="display:none"></div>
-        <div id="body">
-            <h1 class="title">Saved Playlists</h1>
-            <form method="POST" action="/view_specific" id="main_form">
-                {% for i in range(size) %}
-                    <div style="width:50%; float: left">
-                        <input type="checkbox" name="p" value={{i}} class="catCheckbox" id={{saved_playlists[i][20]}} onclick="submit()">
-                        <label for={{saved_playlists[i][20]}} style="font-size: 2.5rem; font-weight: 800">
-                            <h1 class="title">{{saved_playlists[i][20]}}</h1>
-                            <h1 class="seed_track_div_text">{{saved_playlists[i][21]}}</h1>
-                        </label>
-                    </div>
-                {% endfor %}
-            </form>
-            <form method="GET" action="/">
-                <div style="width:100%; float:right">
-                    <input type="submit" class="button" value="Home" onclick="load()">
-                </div>
-            </form>
+  <head>
+    <meta charset="utf-8" />
+    <title id="title">Aux Assistant - View Saved</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/main.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../static/images/favicon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="../static/images/favicon.png"
+    />
+  </head>
+  <body>
+    <div id="loader" style="display: none"></div>
+    <div id="body">
+      <h1 class="title">Saved Playlists</h1>
+      <form method="POST" action="/view_specific" id="main_form">
+        {% for i in range(size) %}
+        <div style="width: 50%; float: left">
+          <input
+            type="checkbox"
+            name="p"
+            value="{{i}}"
+            class="catCheckbox"
+            id="{{saved_playlists[i][20]}}"
+            onclick="submit()"
+          />
+          <label
+            for="{{saved_playlists[i][20]}}"
+            style="font-size: 2.5rem; font-weight: 800"
+          >
+            <h1 class="title">{{saved_playlists[i][20]}}</h1>
+            <h1 class="seed_track_div_text">{{saved_playlists[i][21]}}</h1>
+          </label>
         </div>
-        <script>
-            // variable which is updated whenever a genre or subgenre is clicked
-            var numberChecked = 0;
-            var remain = 5;
-            // this functions handles displaying the div of subgenres whether they are currently hidden or visible
-            // The numberChecked variable is taken into account also, preventing the display of subgenres if 5 have already been selected
-            function displaySubOptions(genre) {
-                if(document.getElementById(genre+"_genres").style.display === "none") {
-                    if(numberChecked < 5) {
-                        document.getElementById(genre+"_genres").style.display = "block";
-                        document.getElementById(genre+"_hidden").name= "genres";
-                        document.getElementById(genre+"_hidden").value= genre;
-                        if(numberChecked === 0) {
-                            document.getElementById('valid').value = "true";
-                        }
-                        numberChecked++;
-                        remain--;
-                        document.getElementById("remaining").innerHTML = remain;
-                    }
-                    else {
-                        document.getElementById(genre).checked = false;
-                    }
-                }
-                else {
-                        document.getElementById(genre+"_genres").style.display = "none";
-                        document.getElementById(genre+"_hidden").removeAttribute('name');
-                        document.getElementById(genre+"_hidden").removeAttribute('value');
-                        numberChecked--;
-                        remain++;
-                        document.getElementById("remaining").innerHTML = remain;
-                        if(numberChecked === 0) {
-                            document.getElementById('valid').value = "false";
-                        }
-                    }
+        {% endfor %}
+      </form>
+      <form method="GET" action="/">
+        <div style="width: 100%; float: right">
+          <input type="submit" class="button" value="Home" onclick="load()" />
+        </div>
+      </form>
+    </div>
+    <script>
+      // variable which is updated whenever a genre or subgenre is clicked
+      var numberChecked = 0;
+      var remain = 5;
+      // this functions handles displaying the div of subgenres whether they are currently hidden or visible
+      // The numberChecked variable is taken into account also, preventing the display of subgenres if 5 have already been selected
+      function displaySubOptions(genre) {
+        if (
+          document.getElementById(genre + "_genres").style.display === "none"
+        ) {
+          if (numberChecked < 5) {
+            document.getElementById(genre + "_genres").style.display = "block";
+            document.getElementById(genre + "_hidden").name = "genres";
+            document.getElementById(genre + "_hidden").value = genre;
+            if (numberChecked === 0) {
+              document.getElementById("valid").value = "true";
             }
-            // this function is called everytime a genre or subgenre is clicked on
-            // if the selection is "unchecked" then the numberChecked is decremented
-            // if the selection is "checked" then the numberChecked is incremented IF the numberChecked is less than 5
-            // if numberChecked is not less than 5 then javascript makes selection not able to be selected
-            function checkboxChange(cb) {
-                if(cb.checked === false) {
-                    numberChecked--;
-                    remain++;
-                    document.getElementById("remaining").innerHTML = remain;
-                    if(numberChecked === 0) {
-                        document.getElementById('valid').value = "false";
-                    }
-                }
-                else {
-                    if(numberChecked < 5) {
-                        if(numberChecked === 0) {
-                            document.getElementById('valid').value = "true";
-                        }
-                        numberChecked++;
-                        remain--;
-                        document.getElementById("remaining").innerHTML = remain;
-                    }
-                    else {
-                        cb.checked = false;
-                    }
-                }
+            numberChecked++;
+            remain--;
+            document.getElementById("remaining").innerHTML = remain;
+          } else {
+            document.getElementById(genre).checked = false;
+          }
+        } else {
+          document.getElementById(genre + "_genres").style.display = "none";
+          document.getElementById(genre + "_hidden").removeAttribute("name");
+          document.getElementById(genre + "_hidden").removeAttribute("value");
+          numberChecked--;
+          remain++;
+          document.getElementById("remaining").innerHTML = remain;
+          if (numberChecked === 0) {
+            document.getElementById("valid").value = "false";
+          }
+        }
+      }
+      // this function is called everytime a genre or subgenre is clicked on
+      // if the selection is "unchecked" then the numberChecked is decremented
+      // if the selection is "checked" then the numberChecked is incremented IF the numberChecked is less than 5
+      // if numberChecked is not less than 5 then javascript makes selection not able to be selected
+      function checkboxChange(cb) {
+        if (cb.checked === false) {
+          numberChecked--;
+          remain++;
+          document.getElementById("remaining").innerHTML = remain;
+          if (numberChecked === 0) {
+            document.getElementById("valid").value = "false";
+          }
+        } else {
+          if (numberChecked < 5) {
+            if (numberChecked === 0) {
+              document.getElementById("valid").value = "true";
             }
-            // Function which handles the display of the loading visual
-            function load() {
-                document.getElementById("loader").style.display = 'block';
-                document.getElementById("body").style.display = 'none';
-            }
-            function submit() {
-                document.getElementById("main_form").submit();
-                load();
-            }
-        </script>
-    </body>
+            numberChecked++;
+            remain--;
+            document.getElementById("remaining").innerHTML = remain;
+          } else {
+            cb.checked = false;
+          }
+        }
+      }
+      // Function which handles the display of the loading visual
+      function load() {
+        document.getElementById("loader").style.display = "block";
+        document.getElementById("body").style.display = "none";
+      }
+      function submit() {
+        document.getElementById("main_form").submit();
+        load();
+      }
+    </script>
+  </body>
 </html>
