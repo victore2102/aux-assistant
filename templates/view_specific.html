@@ -1,40 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title id="title">Aux Assistant - {{playlist[20]}}</title>
-        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
-        <link rel="icon" type="image/png" sizes="32x32" href="../static/images/favicon.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="../static/images/favicon.png">
-    </head>
-    <body>
-        <div id="loader" style="display:none"></div>
-        <div id="body">
-            <h1 class="title">{{playlist[20]}}</h1>
-                {% for track in range(20) %}
-                        <div class="playlist_div">
-                            <h1 class="playlist_div_text">{{playlist[track][1]}}</h1>
-                            <img src="{{playlist[track][5]}}" class="playlist_div_image">
-                            <h1 class="playlist_div_text">{{playlist[track][3]}}</h1>
-                        </div>
-                {% endfor %}
-            <form method="GET" action="/view_saved">
-                <div style="width:50%; float:left">
-                    <input type="submit" class="button" value="Back" onclick="load()">
-                </div>
-            </form>
-            <form>
-                <div style="width:50%; float:left">
-                    <input type="submit" class="button" value="Delete">
-                </div>
-            </form>
+  <head>
+    <meta charset="utf-8" />
+    <title id="title">Aux Assistant - {{playlist[20]}}</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/main.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../static/images/favicon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="../static/images/favicon.png"
+    />
+  </head>
+  <body>
+    <div id="loader" style="display: none"></div>
+    <div id="body">
+      <h1 class="title">{{playlist[20]}}</h1>
+      {% for track in range(20) %}
+      <div class="playlist_div">
+        <h1 class="playlist_div_text">{{playlist[track][1]}}</h1>
+        <img src="{{playlist[track][5]}}" class="playlist_div_image" />
+        <h1 class="playlist_div_text">{{playlist[track][3]}}</h1>
+      </div>
+      {% endfor %}
+      <form method="GET" action="/view_saved">
+        <div style="width: 50%; float: left">
+          <input type="submit" class="button" value="Back" onclick="load()" />
         </div>
-        <script>
-            // Function which handles the display of the loading visual
-            function load() {
-                document.getElementById("loader").style.display = 'block';
-                document.getElementById("body").style.display = 'none';
-            }
-        </script>
-    </body>
+      </form>
+      <form>
+        <div style="width: 50%; float: left">
+          <input type="submit" class="button" value="Delete" />
+        </div>
+      </form>
+    </div>
+    <script>
+      // Function which handles the display of the loading visual
+      function load() {
+        document.getElementById("loader").style.display = "block";
+        document.getElementById("body").style.display = "none";
+      }
+    </script>
+  </body>
 </html>
