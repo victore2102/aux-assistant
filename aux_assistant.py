@@ -1,6 +1,7 @@
 '''Aux Assistant - Victor Ekpenyong & Jacob Gaudet'''
 import os
 import random
+import hashlib
 import requests
 from flask import Flask, render_template, request, redirect, url_for, flash
 from dotenv import load_dotenv, find_dotenv
@@ -40,8 +41,6 @@ selected_categories = list()
 aux_assistant_playlist = list()
 saved = list()
 global_playlist_names = set()
-USER = None
-USERSET = set()
 
 # Helper Function(s)
 # 1. Function makes API call to get a playlist based on passed in categorie
@@ -127,7 +126,7 @@ def recommended_songs_info_list(recommended_songs):
 @app.route('/')
 def hello():
     '''Home Page Display'''
-    return render_template('index.html', user=USER)
+    return render_template('index.html', user=str(current_user.username))
 
 # When made add login required decorator
 @app.route('/genres')
@@ -249,30 +248,35 @@ def signup_page():
 @app.route('/validateSignup', methods=['GET', 'POST'])
 def validate_signup():
     '''Validates signup'''
-    user = str(request.form.get("UserName"))
-    global USERSET
-    if user in USERSET:
-        flash('Username already in use, try again or click below to Log In')
+    username = str(request.form.get("UserName"))
+    password = str(request.form.get("PassWord")) + os.getenv("SALT")
+    hashed_password = hashlib.md5(password.encode())
+    user = User.query.filter_by(username=username).first()
+    if user:
+        flash('Username already in use, try again or click below to Login')
         return redirect(url_for('signup_page'))
-    USERSET.add(user)
+    new_user = User(username=username, password=str(hashed_password.hexdigest()))
+    db.session.add(new_user)
+    db.session.commit()
     return redirect(url_for('login_page'))
 
 @app.route('/validateLogin', methods=['GET', 'POST'])
 def validate_login():
     '''Validates login'''
-    user = str(request.form.get("UserName"))
-    if not user in USERSET:
-        flash('Username and/or Password invalid, try again or click below to Sign Up')
-        return redirect(url_for('login_page'))
-    global USER
-    USER = user
-    return redirect(url_for('hello'))
+    username = str(request.form.get("UserName"))
+    password = str(request.form.get("PassWord")) + os.getenv("SALT")
+    hashed_password = hashlib.md5(password.encode())
+    user = User.query.filter_by(username=username, password=str(hashed_password.hexdigest())).first()
+    if user:
+        login_user(user)
+        return redirect(url_for('hello'))
+    flash('Username and/or Password invalid, try again or click below to Sign Up')
+    return redirect(url_for('login_page'))
 
 @app.route('/logout')
 def logout():
     '''User logout'''
-    global USER
-    USER = None
+    logout_user()
     return redirect(url_for('hello'))
 
 # Defining the user table for storing User profile info in database
