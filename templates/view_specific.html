@@ -37,9 +37,10 @@
           <input type="submit" class="button" value="Back" onclick="load()" />
         </div>
       </form>
-      <form>
+      <form method="POST" action="/delete">
         <div style="width: 50%; float: left">
-          <input type="submit" class="button" value="Delete" />
+          <input type="submit" class="button" value="Delete" onclick="load()" />
+          <input type="hidden" name="delete" value="{{name}}" />
         </div>
       </form>
     </div>

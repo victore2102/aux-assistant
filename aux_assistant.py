@@ -370,6 +370,7 @@ def save_playlist_handler():
     new_playlist = SavedPlaylists(username=str(current_user.username), playlist_name=playlist_name, date=date, playlist_info=playlist_info)
     db.session.add(new_playlist)
     db.session.commit()
+    flash(f"Playlist : {playlist_name} has been created")
     return redirect(url_for('hello'))
 
 @app.route('/view_saved')
@@ -386,3 +387,14 @@ def view_specific_saved_playlists():
     playlist_name = request.form.get('p')
     specific = specific_playlist_list(playlist_name)
     return render_template('view_specific.html', playlist=specific, name=playlist_name)
+
+@app.route('/delete', methods=['GET', 'POST'])
+@login_required
+def delete_playlists():
+    '''Handles the deletion of playlists'''
+    playlist_name = request.form.get('delete')
+    PlaylistNames.query.filter_by(username=str(current_user.username), playlist_name=playlist_name).delete()
+    SavedPlaylists.query.filter_by(username=str(current_user.username), playlist_name=playlist_name).delete()
+    db.session.commit()
+    flash(f"Playlist : {playlist_name} has been deleted")
+    return redirect(url_for('hello'))

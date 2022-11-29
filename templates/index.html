@@ -24,6 +24,16 @@
   <body>
     <div id="loader" style="display: none"></div>
     <div id="body">
+      {% with messages = get_flashed_messages() %} {% if messages %} {% block
+        content %}
+        <div>
+          {% for message in get_flashed_messages() %}
+          <h1 style="color: rgb(41, 51, 40); background-color: rgb(225, 0, 0)">
+            {{ message }}
+          </h1>
+          {% endfor %} {% block page_content %}{% endblock %}
+        </div>
+        {% endblock %} {% endif %} {% endwith %}
       <h1 class="mainSub_title">Spotify</h1>
       <h1 class="main_title">Aux Assistant</h1>
       {% if user != None %}
