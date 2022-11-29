@@ -19,6 +19,29 @@ app.secret_key = os.getenv('APP_SECRET_KEY')
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 db = SQLAlchemy(app)  # initializing database using flask "app"
 
+
+# Defining the user table for storing User profile info in database
+class User(UserMixin, db.Model):
+    '''User model'''
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(100), unique=False, nullable=False)
+    
+    def __repr__(self)->str:
+        return f"Username: {self.username}"
+    
+with app.app_context():  # build the table
+    db.create_all()
+
+# Login manager setup   
+login_manager = LoginManager()
+login_manager.login_view = 'login'
+login_manager.init_app(app)
+@login_manager.user_loader
+def load_user(user_id):
+    '''Load user from User model in db'''
+    return User.query.get(int(user_id))
+
 # API URL'S
 SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/api/token'
 SPOTIFY_CATEGORIES_URL = 'https://api.spotify.com/v1/browse/categories'
@@ -126,16 +149,22 @@ def recommended_songs_info_list(recommended_songs):
 @app.route('/')
 def hello():
     '''Home Page Display'''
-    return render_template('index.html', user=str(current_user.username))
+    if current_user.is_authenticated:
+        user = str(current_user.username)
+    else:
+        user = None
+    return render_template('index.html', user=user)
 
-# When made add login required decorator
+
 @app.route('/genres')
+@login_required
 def genre_display():
     '''Genres Selection Page Display'''
     return render_template('genres.html')
 
-# When made add login required decorator
+
 @app.route('/seed_tracks', methods=['GET', 'POST'])
+@login_required
 def seed_tracks_display():
     '''Genre Handler & Seed Tracks Display'''
     if(request.form.get("valid") == "false"):
@@ -152,7 +181,9 @@ def seed_tracks_display():
         seed_track_and_artist_list.append(categories_playlists_tracks(categorie))
         # seed_track_and_artist_list will be in format [ [ [],[],[] ], [ [],[],[] ], [ [],[],[] ]...]
     return render_template('seed_tracks.html', seedTracks=seed_track_and_artist_list)
+
 @app.route('/re_shuffle', methods=['GET', 'POST'])
+@login_required
 def re_shuffle_tracks():
     '''Handles the re-shuffling of tracks on seed track page'''
     global selected_categories
@@ -160,8 +191,10 @@ def re_shuffle_tracks():
     for categorie in selected_categories:
         seed_track_and_artist_list.append(categories_playlists_tracks(categorie))
     return render_template('seed_tracks.html', seedTracks=seed_track_and_artist_list)
-# When made add login required decorator
+
+
 @app.route('/selection', methods=['GET', 'POST'])
+@login_required
 def final_selection():
     '''Prompts the user to make their final selection of up to 5 entries'''
     seed_track_ids = []
@@ -175,13 +208,14 @@ def final_selection():
         seed_artist_names = request.form.getlist('seed_artist_names')
     if(len(selected_genres) + len(seed_track_names) + len(seed_artist_names) > 5):
         return render_template('final_selection.html', genres=selected_genres, track_names=seed_track_names, artist_names=seed_artist_names,
-        track_ids=seed_track_ids, artist_ids=seed_artist_ids, genres_size=len(selected_genres), 
+        track_ids=seed_track_ids, artist_ids=seed_artist_ids, genres_size=len(selected_genres),
         tracks_size=len(seed_track_names), artists_size=len(seed_artist_names))
     generate_playlist_api(selected_genres, seed_track_ids, seed_artist_ids)
     return redirect(url_for('view_songs'))
 
-# When made add login required decorator
+
 @app.route('/generate', methods=['GET', 'POST'])
+@login_required
 def generate_playlist():
     '''Handles form data from final selections and calls function for recommended tracks'''
     final_genres = request.form.getlist('final_genres')
@@ -190,8 +224,9 @@ def generate_playlist():
     generate_playlist_api(final_genres, final_track_ids, final_artist_ids)
     return redirect(url_for('view_songs'))
 
-# When made add login required decorator
+
 @app.route('/playlist_view', methods=['GET', 'POST'])
+@login_required
 def view_songs():
     '''Displays recommended tracks'''
     return render_template('view_playlist.html', playlist=aux_assistant_playlist)
@@ -202,11 +237,13 @@ def about_page():
     return render_template('about.html')
 
 @app.route('/save')
+@login_required
 def save_playlist():
     '''View Save Playlist Page'''
     return render_template('save_playlist.html')
 
 @app.route('/save_handler', methods=['GET', 'POST'])
+@login_required
 def save_playlist_handler():
     '''Handler for saving playlist'''
     playlist_name = request.form.get('playlist_name')
@@ -225,6 +262,7 @@ def save_playlist_handler():
     return redirect(url_for('hello'))
 
 @app.route('/view_saved')
+@login_required
 def view_saved_playlists():
     '''Renders page display of saved playlists'''
     return render_template('view_saved_playlists.html', saved_playlists=saved, size=len(saved))
@@ -278,25 +316,3 @@ def logout():
     '''User logout'''
     logout_user()
     return redirect(url_for('hello'))
-
-# Defining the user table for storing User profile info in database
-class User(UserMixin, db.Model):
-    '''User model'''
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(100), unique=False, nullable=False)
-    
-    def __repr__(self)->str:
-        return f"Username: {self.username}"
-    
-with app.app_context():  # build the table
-    db.create_all()
-
-# Login manager setup   
-login_manager = LoginManager()
-login_manager.login_view = 'login'
-login_manager.init_app(app)
-@login_manager.user_loader
-def load_member(user_id):
-    '''Load user from User model in db'''
-    return User.query.get(int(user_id))
