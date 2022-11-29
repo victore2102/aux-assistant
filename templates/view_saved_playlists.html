@@ -31,17 +31,17 @@
           <input
             type="checkbox"
             name="p"
-            value="{{i}}"
+            value="{{saved_playlists[i][0]}}"
             class="catCheckbox"
-            id="{{saved_playlists[i][20]}}"
+            id="{{saved_playlists[i][0]}}"
             onclick="submit()"
           />
           <label
-            for="{{saved_playlists[i][20]}}"
+            for="{{saved_playlists[i][0]}}"
             style="font-size: 2.5rem; font-weight: 800"
           >
-            <h1 class="title">{{saved_playlists[i][20]}}</h1>
-            <h1 class="seed_track_div_text">{{saved_playlists[i][21]}}</h1>
+            <h1 class="title">{{saved_playlists[i][0]}}</h1>
+            <h1 class="seed_track_div_text">{{saved_playlists[i][1]}}</h1>
           </label>
         </div>
         {% endfor %}

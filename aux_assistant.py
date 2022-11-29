@@ -26,10 +26,19 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), unique=False, nullable=False)
-    
+ 
     def __repr__(self)->str:
         return f"Username: {self.username}"
-    
+
+class PlaylistNames(db.Model):
+    '''Used to return all names of playlists associated with user'''
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=False, nullable=False)
+    playlist_name = db.Column(db.String(100), unique=True, nullable=False)
+    playlist_date = db.Column(db.String(100), unique=False, nullable=False)
+    def __repr__(self) -> str:
+        return f"{self.playlist_name}-&-{self.playlist_date}--END--"
+
 with app.app_context():  # build the table
     db.create_all()
 
@@ -146,6 +155,18 @@ def recommended_songs_info_list(recommended_songs):
     # [ [song_uri, song_name, song_id, artist_name, artist_id, song_image_url] ]
     # 20 inner lists within outer list
 
+
+def saved_playlists_list():
+    saved_playlists = []
+    saved_playlists_names = str(PlaylistNames.query.filter_by(username=str(current_user.username)).all())
+    filtered_names = saved_playlists_names.lstrip("[")
+    filtered_names = filtered_names.rstrip("--END--]")
+    saved_playlists_names_split = list(filtered_names.split("--END--, "))
+    for p in saved_playlists_names_split:
+        p_split = list(p.split("-&-"))
+        saved_playlists.append(p_split)
+    return saved_playlists
+
 @app.route('/')
 def hello():
     '''Home Page Display'''
@@ -249,29 +270,34 @@ def save_playlist_handler():
     playlist_name = request.form.get('playlist_name')
     date = request.form.get('date')
     # will change once db is set up
-    global global_playlist_names
-    if playlist_name in global_playlist_names:
+    playlist = PlaylistNames.query.filter_by(username=str(current_user.username), playlist_name=playlist_name).first()
+    if playlist:
         flash('Playlist Name already exists')
         return redirect(url_for('save_playlist'))
-    global_playlist_names.add(playlist_name)
-    current_playlist = list()
-    current_playlist = aux_assistant_playlist
-    current_playlist.append(playlist_name)
-    current_playlist.append(date)
-    saved.append(current_playlist)
+    new_playlist_name = PlaylistNames(username=str(current_user.username), playlist_name=playlist_name, playlist_date=date)
+    db.session.add(new_playlist_name)
+    db.session.commit()
+    #for p in aux_assistant_playlist:
+     #   new_playlist = SavedPlaylist(username=str(current_user.username), playlist_name=playlist_name, date=date, song_uri=p[0],
+      #  song_name=p[1], song_id=p[2], artist_name=p[3], artist_id=p[4], song_image_url=p[5])
+       # db.session.add(new_playlist)
+        #db.session.commit()
     return redirect(url_for('hello'))
 
 @app.route('/view_saved')
 @login_required
 def view_saved_playlists():
     '''Renders page display of saved playlists'''
+    saved = saved_playlists_list()
     return render_template('view_saved_playlists.html', saved_playlists=saved, size=len(saved))
 
 @app.route('/view_specific', methods=['GET', 'POST'])
 def view_specific_saved_playlists():
     '''Renders page which displays specific saved playlist'''
-    playlist = int(request.form.get('p'))
-    return render_template('view_specific.html', playlist=saved[playlist])
+    playlist = request.form.get('p')
+    print("playlist name - ", playlist)
+    return redirect(url_for('hello'))
+    #return render_template('view_specific.html', playlist=saved[playlist])
 
 @app.route('/login')
 def login_page():
