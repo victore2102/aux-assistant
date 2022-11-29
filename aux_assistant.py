@@ -30,6 +30,22 @@ class User(UserMixin, db.Model):
     def __repr__(self)->str:
         return f"Username: {self.username}"
     
+class SavedPlaylist(db.Model):
+    '''SavedPlaylist model'''
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    playlist_name = db.Column(db.String(100), unique=False, nullable=False)
+    date = db.Column(db.String(100), unique=False, nullable=False)
+    song_uri = db.Column(db.String(100), unique=True, nullable=False)
+    song_name = db.Column(db.String(100), unique=False, nullable=False)
+    song_id = db.Column(db.String(100), unique=True, nullable=False)
+    artist_name = db.Column(db.String(100), unique=False, nullable=False)
+    artist_id = db.Column(db.String(100), unique=False, nullable=False)
+    song_image_url = db.Column(db.String(100), unique=False, nullable=False)
+    
+    def __repr__(self)->str:
+        return f"{self.song_name}-&-{self.artist_name}-&-{self.song_image_url}--END--"
+
 with app.app_context():  # build the table
     db.create_all()
 
