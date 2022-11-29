@@ -27,14 +27,13 @@
       <h1 class="title">Saved Playlists</h1>
       <form method="POST" action="/view_specific" id="main_form">
         {% for i in range(size) %}
-        <div style="width: 50%; float: left">
+        <div style="width: 50%; float: left" onclick="submit()">
           <input
             type="checkbox"
             name="p"
             value="{{saved_playlists[i][0]}}"
             class="catCheckbox"
             id="{{saved_playlists[i][0]}}"
-            onclick="submit()"
           />
           <label
             for="{{saved_playlists[i][0]}}"
@@ -118,8 +117,9 @@
         document.getElementById("body").style.display = "none";
       }
       function submit() {
+        document.getElementById("loader").style.display = "block";
+        document.getElementById("body").style.display = "none";
         document.getElementById("main_form").submit();
-        load();
       }
     </script>
   </body>

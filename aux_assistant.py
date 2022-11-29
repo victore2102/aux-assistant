@@ -35,27 +35,21 @@ class PlaylistNames(db.Model):
     '''PlaylistNames Model'''
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=False, nullable=False)
-    playlist_name = db.Column(db.String(100), unique=True, nullable=False)
+    playlist_name = db.Column(db.String(100), unique=False, nullable=False)
     playlist_date = db.Column(db.String(100), unique=False, nullable=False)
     def __repr__(self) -> str:
         return f"{self.playlist_name}-&-{self.playlist_date}--END--"
 
-# build the table
-class SavedPlaylist(db.Model):
-    '''SavedPlaylist model'''
+# Used to store Playlist Information
+class SavedPlaylists(db.Model):
+    '''SavedPlaylists model'''
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
+    username = db.Column(db.String(50), unique=False, nullable=False)
     playlist_name = db.Column(db.String(100), unique=False, nullable=False)
     date = db.Column(db.String(100), unique=False, nullable=False)
-    song_uri = db.Column(db.String(100), unique=True, nullable=False)
-    song_name = db.Column(db.String(100), unique=False, nullable=False)
-    song_id = db.Column(db.String(100), unique=True, nullable=False)
-    artist_name = db.Column(db.String(100), unique=False, nullable=False)
-    artist_id = db.Column(db.String(100), unique=False, nullable=False)
-    song_image_url = db.Column(db.String(100), unique=False, nullable=False)
-    
+    playlist_info = db.Column(db.String(10000), unique=False, nullable=False)
     def __repr__(self)->str:
-        return f"{self.song_name}-&-{self.artist_name}-&-{self.song_image_url}--END--"
+        return f"{self.playlist_info}"
 
 with app.app_context():
     db.create_all()
@@ -127,6 +121,7 @@ def categories_playlists_tracks(categorie):
     # returns -> [ [playlist_name, song_name, song_id, artist_name, artist_id, song_image_url] ]
     # 3 inner lists are within outer list
 
+
 # Function makes API call for Spotify Recommended Tracks
 def generate_playlist_api(final_genres, final_track_ids, final_artist_ids):
     '''Function makes API call for recommended songs and calls function to populate into list of lists'''
@@ -143,6 +138,7 @@ def generate_playlist_api(final_genres, final_track_ids, final_artist_ids):
         },
         timeout=10).json()
     recommended_songs_info_list(recommended_songs)
+
 
 # Function takes JSON data of recommended songs and populates it into a global list of lists which will be used through jinja and for database
 # For saved playlists in database I think schema should include
@@ -173,6 +169,7 @@ def recommended_songs_info_list(recommended_songs):
     # [ [song_uri, song_name, song_id, artist_name, artist_id, song_image_url] ]
     # 20 inner lists within outer list
 
+
 # 1. Function queries the PlaylistNames model by username into a string
 # 2. It takes that returned string and filters it and splits it into multiple lists
 # 3. Each list is split into a sub list then returned as a list of lists
@@ -189,20 +186,32 @@ def saved_playlists_list():
         saved_playlists.append(p_split)
     return saved_playlists
 
+
 # Similar process as function above
-# 4. specific_playlists returns [ [song_name, artist_name, song_image_url], [song_name, artist_name, song_image_url], ... ]
+# 4. specific_playlists returns [ [song_uri, song_name, song_id, artist_name, artist_id, song_image_url] ]
+# In exact form as AUX_ASSISTANT_PLAYLIST list of lists
 def specific_playlist_list(name):
     '''Function which assists in returning the list data of a specific playlist'''
     specific_playlist = []
-    all_songs = str(SavedPlaylists.query.filter_by(username=str(current_user.username), playlist_name=name).all())
-    filtered_songs = all_songs.lstrip("[")
-    filtered_songs = filtered_songs.rstrip("--END--]")
-    all_songs_split = list(filtered_songs.split("--END--, "))
-    for s in all_songs_split:
-        s_split = list(s.split("-&-"))
-        specific_playlist.append(s_split)
+    all_songs = str(SavedPlaylists.query.filter_by(username=str(current_user.username), playlist_name=name).first())
+    filtered_playlist = all_songs.lstrip("--END----BREAK--")
+    filtered_playlist = filtered_playlist.rstrip("--BREAK----END--")
+    specific_playlist_split = list(filtered_playlist.split("--BREAK--"))
+    for song in specific_playlist_split:
+        song_split = list(song.split("-&-"))
+        specific_playlist.append(song_split)
     return specific_playlist
 
+
+# Takes the AUX_ASSISTANT_PLAYLIST global list of list and turns it into a long string
+def playlist_info_string():
+    '''Takes list of list and turns it into a really long string for DB storage'''
+    playlist_long_string = '--END--'
+    for song in AUX_ASSISTANT_PLAYLIST:
+        song_string = '-&-'.join(song)
+        playlist_long_string = playlist_long_string + '--BREAK--' + song_string
+    playlist_long_string = playlist_long_string + '--BREAK----END--'
+    return playlist_long_string
 
 
 @app.route('/')
@@ -218,6 +227,7 @@ def hello():
 def about_page():
     '''About Page Display'''
     return render_template('about.html')
+
 
 # Login, Signup, Logout Routes & Validation Functions
 @app.route('/login')
@@ -263,6 +273,7 @@ def logout():
     '''User logout'''
     logout_user()
     return redirect(url_for('hello'))
+
 
 # Login Required for all routes below
 
@@ -351,16 +362,14 @@ def save_playlist_handler():
     date = request.form.get('date')
     playlist = PlaylistNames.query.filter_by(username=str(current_user.username), playlist_name=playlist_name).first()
     if playlist:
-        flash('Playlist Name already exists')
+        flash('Playlist Name already exists, try again')
         return redirect(url_for('save_playlist'))
     new_playlist_name = PlaylistNames(username=str(current_user.username), playlist_name=playlist_name, playlist_date=date)
     db.session.add(new_playlist_name)
+    playlist_info = playlist_info_string()
+    new_playlist = SavedPlaylists(username=str(current_user.username), playlist_name=playlist_name, date=date, playlist_info=playlist_info)
+    db.session.add(new_playlist)
     db.session.commit()
-    for p in AUX_ASSISTANT_PLAYLIST:
-        new_playlist = SavedPlaylist(username=str(current_user.username), playlist_name=playlist_name, date=date, song_uri=p[0],
-        song_name=p[1], song_id=p[2], artist_name=p[3], artist_id=p[4], song_image_url=p[5])
-        db.session.add(new_playlist)
-        db.session.commit()
     return redirect(url_for('hello'))
 
 @app.route('/view_saved')
