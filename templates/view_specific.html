@@ -24,12 +24,12 @@
   <body>
     <div id="loader" style="display: none"></div>
     <div id="body">
-      <h1 class="title">{{playlist[20]}}</h1>
-      {% for track in range(20) %}
+      <h1 class="title">{{name}}</h1>
+      {% for track in playlist %}
       <div class="playlist_div">
-        <h1 class="playlist_div_text">{{playlist[track][1]}}</h1>
-        <img src="{{playlist[track][5]}}" class="playlist_div_image" />
-        <h1 class="playlist_div_text">{{playlist[track][3]}}</h1>
+        <h1 class="playlist_div_text">{{track[0]}}</h1>
+        <img src="{{track[2]}}" class="playlist_div_image" />
+        <h1 class="playlist_div_text">{{track[1]}}</h1>
       </div>
       {% endfor %}
       <form method="GET" action="/view_saved">
