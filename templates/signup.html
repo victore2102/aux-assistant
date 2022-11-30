@@ -45,7 +45,7 @@
             type="password"
             name="PassWord"
             id="pass"
-            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!,@,#,$,%,^,&,*]).{5,}"
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!,@,#,$,%,^,&,*,?]).{5,}"
             title="Invalid Password Input"
             required
           /><br />
@@ -54,7 +54,6 @@
             class="button"
             type="submit"
             value="Sign Up"
-            onclick="load()"
           />
           <h2 class="title">
             <em>You will be redirected to the log in page</em>
@@ -68,7 +67,7 @@
           <h4 id="uppercase" class="invalid">Uppercase Letter</h4>
           <h4 id="number" class="invalid">Number</h4>
           <h4 id="special" class="invalid">
-            Special Character <em>(!,@,#,$,%,^,&,*)</em>
+            Special Character <em>(!,@,#,$,%,^,&,*,?)</em>
           </h4>
         </div>
         <h1 class="mainSub_title">Already registerd? Click below</h1>
@@ -126,7 +125,7 @@
           number.classList.add("invalid");
         }
 
-        var specialchars = /[!,@,#,$,%,^,&,*]/g;
+        var specialchars = /[!,@,#,$,%,^,&,*,?]/g;
         if (passwordInput.value.match(specialchars)) {
           special.classList.remove("invalid");
           special.classList.add("valid");
