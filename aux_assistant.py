@@ -8,6 +8,7 @@ from dotenv import load_dotenv, find_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 from flask_login import UserMixin
+import json
 
 #'''.env initialization'''
 load_dotenv(find_dotenv())
@@ -72,17 +73,18 @@ SPOTIFY_CATEGORIES_URL = 'https://api.spotify.com/v1/browse/categories'
 SPOTIFY_RECOMMENDATIONS_URL = 'https://api.spotify.com/v1/recommendations'
 
 ## Authorization request & response & header assignment
-auth_response = requests.post(SPOTIFY_AUTH_URL, {
+def auth_response_call():
+    auth_response = requests.post(SPOTIFY_AUTH_URL, {
     'grant_type': 'client_credentials',
     'client_id': os.getenv('SPOTIFY_CLIENT_ID'),
     'client_secret': os.getenv('SPOTIFY_CLIENT_SECRET'),
-}, timeout=10)
-auth_response_data = auth_response.json()
-SPOTIFY_ACCESS_TOKEN = auth_response_data['access_token']
-headers = {
-    "Authorization": "Bearer " + SPOTIFY_ACCESS_TOKEN
-}
-
+    }, timeout=10)
+    auth_response_data = auth_response.json()
+    SPOTIFY_ACCESS_TOKEN = auth_response_data['access_token']
+    headers = {
+        "Authorization": "Bearer " + SPOTIFY_ACCESS_TOKEN
+    }
+    return headers
 
 
 # Helper Function(s)
@@ -92,6 +94,7 @@ headers = {
 def categories_playlists_tracks(categorie):
     '''Function requests playlists based on categorie and returns a list of lists of random tracks within random playlist'''
     categorie_playlist_url = f'https://api.spotify.com/v1/browse/categories/{categorie}/playlists'
+    headers = auth_response_call()
     categorie_playlists = requests.get(url=categorie_playlist_url, headers=headers, timeout=10).json()
     i = 0
     categorie_playlists_tracks_list = list()
@@ -127,6 +130,7 @@ def generate_playlist_api(final_genres, final_track_ids, final_artist_ids):
     seed_genres = ','.join(final_genres)
     seed_tracks = ','.join(final_track_ids)
     seed_artists = ','.join(final_artist_ids)
+    headers = auth_response_call()
     recommended_songs = requests.get(
         url=SPOTIFY_RECOMMENDATIONS_URL,
         headers=headers,
