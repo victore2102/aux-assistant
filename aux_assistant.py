@@ -28,8 +28,11 @@ class Member(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), unique=False, nullable=False)
+    genre_list = db.Column(db.String(5000), unique=False, nullable=True)
+    categorie_list = db.Column(db.String(5000), unique=False, nullable=True)
+    playlist_info = db.Column(db.String(10000), unique=False, nullable=True)
     def __repr__(self)->str:
-        return f"Username: {self.username}"
+        return f"{self.genre_list}--NEXT--{self.categorie_list}--NEXT--{self.playlist_info}"
 # Used to return all names of playlists associated with user
 class PlaylistNames(db.Model):
     '''PlaylistNames Model'''
@@ -80,10 +83,6 @@ headers = {
     "Authorization": "Bearer " + SPOTIFY_ACCESS_TOKEN
 }
 
-# Global variables used in multiple different functions
-SELECTED_GENRES = list()
-SELECTED_CATEGORIES = list()
-AUX_ASSISTANT_PLAYLIST = list()
 
 
 # Helper Function(s)
@@ -146,8 +145,7 @@ def generate_playlist_api(final_genres, final_track_ids, final_artist_ids):
 def recommended_songs_info_list(recommended_songs):
     '''Function parses recommended songs JSON into list of lists of important info'''
     # Global list variable is cleared to allow new playlist data to be stored in it
-    global AUX_ASSISTANT_PLAYLIST
-    AUX_ASSISTANT_PLAYLIST.clear()
+    aux_assistant_playlist = []
     i = 0
     while i < 20:
         track_info_list = list()
@@ -163,11 +161,15 @@ def recommended_songs_info_list(recommended_songs):
         track_info_list.append(artist_id)
         song_image_url = recommended_songs['tracks'][i]['album']['images'][1]['url']
         track_info_list.append(song_image_url)
-        AUX_ASSISTANT_PLAYLIST.append(track_info_list)
+        aux_assistant_playlist.append(track_info_list)
         i+=1
-    # AUX_ASSISTANT_PLAYLIST global list in form of
+    # AUX_ASSISTANT_PLAYLIST list in form of
     # [ [song_uri, song_name, song_id, artist_name, artist_id, song_image_url] ]
     # 20 inner lists within outer list
+    aux_assistant_playlist_string = playlist_info_string(aux_assistant_playlist)
+    new_data = Member.query.filter_by(username=str(current_user.username)).first()
+    new_data.playlist_info = aux_assistant_playlist_string
+    db.session.commit()
 
 
 # 1. Function queries the PlaylistNames model by username into a string
@@ -203,16 +205,57 @@ def specific_playlist_list(name):
     return specific_playlist
 
 
-# Takes the AUX_ASSISTANT_PLAYLIST global list of list and turns it into a long string
-def playlist_info_string():
+# Takes the AUX_ASSISTANT_PLAYLIST list of list and turns it into a long string
+def playlist_info_string(playlist):
     '''Takes list of list and turns it into a really long string for DB storage'''
     playlist_long_string = '--END--'
-    for song in AUX_ASSISTANT_PLAYLIST:
+    for song in playlist:
         song_string = '-&-'.join(song)
         playlist_long_string = playlist_long_string + '--BREAK--' + song_string
     playlist_long_string = playlist_long_string + '--BREAK----END--'
     return playlist_long_string
 
+def list_into_string(python_list):
+    '''Takes a passed in list and converts it into a string with substring characters for division later'''
+    long_string = '--END--'
+    list_string = '-&-'.join(python_list)
+    long_string = long_string + list_string + '--END--'
+    return long_string
+
+# Function accesses the User Model and turns the saved string back into a list based on if they are trying
+# to get the list of genres, categories, or playlist info
+def string_into_list(column):
+    '''Takes long string and converts it back into list, or list of list depending on coulmn'''
+    python_list = []
+    user_data = str(Member.query.filter_by(username=str(current_user.username)).first())
+    filtered_data = list(user_data.split("--NEXT--"))
+    if column == "genre":
+        list_split = filtered_data[0].lstrip("--END--")
+        list_split = list_split.rstrip("--END--")
+        final_list = list(list_split.split("-&-"))
+        python_list = final_list
+    elif column == "categorie":
+        list_split = filtered_data[1].lstrip("--END--")
+        list_split = list_split.rstrip("--END--")
+        final_list = list(list_split.split("-&-"))
+        python_list = final_list
+    else:
+        filtered_playlist = filtered_data[2].lstrip("--END----BREAK--")
+        filtered_playlist = filtered_playlist.rstrip("--BREAK----END--")
+        specific_playlist_split = list(filtered_playlist.split("--BREAK--"))
+        for song in specific_playlist_split:
+            song_split = list(song.split("-&-"))
+            python_list.append(song_split)       
+    return python_list
+
+
+def seed_tracks(categories):
+    '''Helper function which forms list of seed tracks'''
+    seed_track_and_artist_list = list()
+    for categorie in categories:
+        seed_track_and_artist_list.append(categories_playlists_tracks(categorie))
+        # seed_track_and_artist_list will be in format [ [ [],[],[] ], [ [],[],[] ], [ [],[],[] ]...]
+    return seed_track_and_artist_list
 
 @app.route('/')
 def hello():
@@ -291,25 +334,22 @@ def seed_tracks_display():
         flash('Select at least one genre to continue')
         return redirect(url_for('genre_display'))
     genre_list = request.form.getlist("genres")
-    global SELECTED_GENRES
-    SELECTED_GENRES = genre_list
     categorie_list = request.form.getlist("categories")
-    global SELECTED_CATEGORIES
-    SELECTED_CATEGORIES = categorie_list
-    seed_track_and_artist_list = list()
-    for categorie in SELECTED_CATEGORIES:
-        seed_track_and_artist_list.append(categories_playlists_tracks(categorie))
-        # seed_track_and_artist_list will be in format [ [ [],[],[] ], [ [],[],[] ], [ [],[],[] ]...]
+    genre_list_string = list_into_string(genre_list)
+    categorie_list_string = list_into_string(categorie_list)
+    new_data = Member.query.filter_by(username=str(current_user.username)).first()
+    new_data.genre_list = genre_list_string
+    new_data.categorie_list = categorie_list_string
+    db.session.commit()
+    seed_track_and_artist_list = seed_tracks(categorie_list)
     return render_template('seed_tracks.html', seedTracks=seed_track_and_artist_list)
 
 @app.route('/re_shuffle', methods=['GET', 'POST'])
 @login_required
 def re_shuffle_tracks():
     '''Handles the re-shuffling of tracks on seed track page'''
-    global SELECTED_CATEGORIES
-    seed_track_and_artist_list = list()
-    for categorie in SELECTED_CATEGORIES:
-        seed_track_and_artist_list.append(categories_playlists_tracks(categorie))
+    categorie_list = string_into_list("categorie")
+    seed_track_and_artist_list = seed_tracks(categorie_list)
     return render_template('seed_tracks.html', seedTracks=seed_track_and_artist_list)
 
 @app.route('/selection', methods=['GET', 'POST'])
@@ -325,11 +365,12 @@ def final_selection():
         seed_artist_ids = request.form.getlist('seed_artist_ids')
         seed_track_names = request.form.getlist('seed_track_names')
         seed_artist_names = request.form.getlist('seed_artist_names')
-    if(len(SELECTED_GENRES) + len(seed_track_names) + len(seed_artist_names) > 5):
-        return render_template('final_selection.html', genres=SELECTED_GENRES, track_names=seed_track_names, artist_names=seed_artist_names,
-        track_ids=seed_track_ids, artist_ids=seed_artist_ids, genres_size=len(SELECTED_GENRES),
+    selected_genres = string_into_list("genre")
+    if(len(selected_genres) + len(seed_track_names) + len(seed_artist_names) > 5):
+        return render_template('final_selection.html', genres=selected_genres, track_names=seed_track_names, artist_names=seed_artist_names,
+        track_ids=seed_track_ids, artist_ids=seed_artist_ids, genres_size=len(selected_genres),
         tracks_size=len(seed_track_names), artists_size=len(seed_artist_names))
-    generate_playlist_api(SELECTED_GENRES, seed_track_ids, seed_artist_ids)
+    generate_playlist_api(selected_genres, seed_track_ids, seed_artist_ids)
     return redirect(url_for('view_songs'))
 
 @app.route('/generate', methods=['GET', 'POST'])
@@ -346,7 +387,8 @@ def generate_playlist():
 @login_required
 def view_songs():
     '''Displays recommended tracks'''
-    return render_template('view_playlist.html', playlist=AUX_ASSISTANT_PLAYLIST)
+    aux_assistant_playlist = string_into_list("playlist")
+    return render_template('view_playlist.html', playlist=aux_assistant_playlist)
 
 @app.route('/save')
 @login_required
@@ -366,7 +408,8 @@ def save_playlist_handler():
         return redirect(url_for('save_playlist'))
     new_playlist_name = PlaylistNames(username=str(current_user.username), playlist_name=playlist_name, playlist_date=date)
     db.session.add(new_playlist_name)
-    playlist_info = playlist_info_string()
+    aux_assistant_playlist = string_into_list("playlist")
+    playlist_info = playlist_info_string(aux_assistant_playlist)
     new_playlist = SavedPlaylists(username=str(current_user.username), playlist_name=playlist_name, date=date, playlist_info=playlist_info)
     db.session.add(new_playlist)
     db.session.commit()
@@ -398,3 +441,4 @@ def delete_playlists():
     db.session.commit()
     flash(f"Playlist : {playlist_name} has been deleted")
     return redirect(url_for('hello'))
+
