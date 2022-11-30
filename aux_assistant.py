@@ -23,7 +23,7 @@ db = SQLAlchemy(app)  # initializing database using flask "app"
 # DATABASE MODELS
 
 # Defining the user table for storing User profile info in database
-class User(UserMixin, db.Model):
+class Member(UserMixin, db.Model):
     '''User Model'''
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
@@ -61,7 +61,7 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def load_user(user_id):
     '''Load user from User model in db'''
-    return User.query.get(int(user_id))
+    return Member.query.get(int(user_id))
 
 # API URL'S
 SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/api/token'
@@ -246,11 +246,11 @@ def validate_signup():
     username = str(request.form.get("UserName"))
     password = str(request.form.get("PassWord")) + os.getenv("SALT")
     hashed_password = hashlib.md5(password.encode())
-    user = User.query.filter_by(username=username).first()
+    user = Member.query.filter_by(username=username).first()
     if user:
         flash('Username already in use, try again or click below to Login')
         return redirect(url_for('signup_page'))
-    new_user = User(username=username, password=str(hashed_password.hexdigest()))
+    new_user = Member(username=username, password=str(hashed_password.hexdigest()))
     db.session.add(new_user)
     db.session.commit()
     return redirect(url_for('login_page'))
@@ -261,7 +261,7 @@ def validate_login():
     username = str(request.form.get("UserName"))
     password = str(request.form.get("PassWord")) + os.getenv("SALT")
     hashed_password = hashlib.md5(password.encode())
-    user = User.query.filter_by(username=username, password=str(hashed_password.hexdigest())).first()
+    user = Member.query.filter_by(username=username, password=str(hashed_password.hexdigest())).first()
     if user:
         login_user(user)
         return redirect(url_for('hello'))
