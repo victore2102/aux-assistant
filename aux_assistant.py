@@ -18,6 +18,7 @@ app.secret_key = os.getenv('APP_SECRET_KEY')
 # Used for security regarding passwords
 app.config['SECRET_KEY'] = app.secret_key
 # Database configuration
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True}
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 db = SQLAlchemy(app)  # initializing database using flask "app"
 
